@@ -8,7 +8,7 @@ public class RoadController : MonoBehaviour {
     private bool isPlayerGrounded;
     //public Transform roadDespawn;
     public Transform roadSpawn;
-    private float speed = 0.25f;
+    private float speed = 1.0f;
     private bool canSpawnGround = false;
 
     private bool isPlayerJumping;
@@ -45,9 +45,12 @@ public class RoadController : MonoBehaviour {
             destination = new Vector3(transform.position.x, transform.position.y, transform.position.z - 1.0f);
         }
 
-        transform.position = Vector3.Lerp(transform.position, destination, speed);
+        //transform.position = Vector3.Lerp(transform.position, destination, speed);
+        //transform.position = destination;
+        float step = speed * Time.deltaTime;
+        transform.position = Vector3.MoveTowards(transform.position, destination, step);
 
-        if (transform.position.z <= -10f)
+        if (transform.position.z <= -9.5f)
         {
             roadSpawn.gameObject.SendMessage("SpawnGround", 35);
             Destroy(gameObject);

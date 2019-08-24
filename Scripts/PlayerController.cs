@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class PlayerController : MonoBehaviour {
 
     private Rigidbody rb;
-    private bool jump = false;
+    [HideInInspector] public static bool jump = false;
     public LayerMask Ground;
     [HideInInspector] public static bool isGrounded = true;
     private Vector3 dir = Vector3.down;

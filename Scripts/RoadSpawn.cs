@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class RoadSpawn : MonoBehaviour {
 
-    public RoadController road;
+    public RoadController roadLR;
+    public RoadController roadRL;
     public RoadController ground;
     private int groundDecider;
     private int rotationDecider;
@@ -44,8 +45,13 @@ public class RoadSpawn : MonoBehaviour {
         else
         {
             Quaternion newRotation = transform.rotation;
-            if (rotationDecider <= 0) newRotation *= Quaternion.Euler(0, 180f, 0);
-            Instantiate(road, pos, newRotation);
+            //if (rotationDecider <= 0) newRotation *= Quaternion.Euler(0, 180f, 0);
+            if (rotationDecider <= 0) Instantiate(roadLR, pos, transform.rotation);
+            else
+            {
+                newRotation *= Quaternion.Euler(0, 180f, 0);
+                Instantiate(roadRL, pos, newRotation);
+            }
             roadCount++;
         }
     }

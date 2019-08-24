@@ -13,12 +13,14 @@ public class PlayerController : MonoBehaviour {
     private Vector3 dir = Vector3.down;
     private float distance = 0.5f;
     private Scene currentscene;
+    [HideInInspector] public static int score = 0;
 
     // Use this for initialization
     void Start ()
     {
         rb = GetComponent<Rigidbody>();
         currentscene = SceneManager.GetActiveScene();
+        score = 0;
     }
 	
 	// Update is called once per frame
@@ -46,7 +48,12 @@ public class PlayerController : MonoBehaviour {
         if (other.gameObject.CompareTag("Truck"))
         {
             //Destroy(gameObject);
-            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            SceneManager.LoadScene("Score", LoadSceneMode.Single);
+        }
+
+        if(other.gameObject.CompareTag("Score"))
+        {
+            score++;
         }
     }
 

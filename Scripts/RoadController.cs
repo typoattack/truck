@@ -6,7 +6,7 @@ public class RoadController : MonoBehaviour {
 
     private Rigidbody rb;
     private bool isPlayerGrounded;
-    public Transform roadDespawn;
+    //public Transform roadDespawn;
     public Transform roadSpawn;
     private float speed = 0.25f;
     private bool canSpawnGround = false;
@@ -20,7 +20,7 @@ public class RoadController : MonoBehaviour {
         rb = GetComponent<Rigidbody>();
         isPlayerGrounded = PlayerController.isGrounded;
         rb.velocity = new Vector3(0, 0, 0);
-        roadDespawn = GameObject.Find("roadDespawn").transform;
+        //roadDespawn = GameObject.Find("roadDespawn").transform;
         roadSpawn = GameObject.Find("roadSpawn").transform;
 
         isPlayerJumping = PlayerController.jump;
@@ -42,7 +42,7 @@ public class RoadController : MonoBehaviour {
         isPlayerJumping = PlayerController.jump;
         if (isPlayerJumping == true)
         {
-            destination = new Vector3(transform.position.x, transform.position.y, transform.position.z - 1);
+            destination = new Vector3(transform.position.x, transform.position.y, transform.position.z - 1.0f);
         }
 
         transform.position = Vector3.Lerp(transform.position, destination, speed);

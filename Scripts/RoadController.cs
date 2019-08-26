@@ -5,11 +5,11 @@ using UnityEngine;
 public class RoadController : MonoBehaviour {
 
     private Rigidbody rb;
-    private bool isPlayerGrounded;
+    //private bool isPlayerGrounded;
     //public Transform roadDespawn;
     public Transform roadSpawn;
     private float speed = 1.0f;
-    private bool canSpawnGround = false;
+    //private bool canSpawnGround = false;
 
     private bool isPlayerJumping;
     private Vector3 destination;
@@ -18,7 +18,7 @@ public class RoadController : MonoBehaviour {
     void Start()
     {
         rb = GetComponent<Rigidbody>();
-        isPlayerGrounded = PlayerController.isGrounded;
+        //isPlayerGrounded = PlayerController.isGrounded;
         rb.velocity = new Vector3(0, 0, 0);
         //roadDespawn = GameObject.Find("roadDespawn").transform;
         roadSpawn = GameObject.Find("roadSpawn").transform;
@@ -40,7 +40,7 @@ public class RoadController : MonoBehaviour {
         */
 
         isPlayerJumping = PlayerController.jump;
-        if (isPlayerJumping == true)
+        if (isPlayerJumping)
         {
             destination = new Vector3(transform.position.x, transform.position.y, transform.position.z - 1.0f);
         }

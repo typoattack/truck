@@ -12,14 +12,14 @@ public class PlayerController : MonoBehaviour {
     [HideInInspector] public static bool isGrounded = true;
     private Vector3 dir = Vector3.down;
     private float distance = 0.5f;
-    private Scene currentscene;
+    //private Scene currentscene;
     [HideInInspector] public static int score = 0;
 
     // Use this for initialization
     void Start ()
     {
         rb = GetComponent<Rigidbody>();
-        currentscene = SceneManager.GetActiveScene();
+        //currentscene = SceneManager.GetActiveScene();
         score = 0;
     }
 	
@@ -38,6 +38,7 @@ public class PlayerController : MonoBehaviour {
     {
         if (jump)
         {
+			rb.velocity = new Vector3 (0f, 0f, 0f);
             rb.AddForce(new Vector3(0f, 5.555f, 0f), ForceMode.Impulse);
             jump = false;
         }

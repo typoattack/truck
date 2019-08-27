@@ -22,6 +22,11 @@ public class PlayerController : MonoBehaviour {
         rb = GetComponent<Rigidbody>();
         //currentscene = SceneManager.GetActiveScene();
         score = 0;
+		if (!PlayerPrefs.HasKey ("TotalCoins")) {
+			PlayerPrefs.SetInt ("TotalCoins", 0);
+		} else {
+			coins = PlayerPrefs.GetInt ("TotalCoins");
+		}
     }
 	
 	// Update is called once per frame
@@ -60,7 +65,8 @@ public class PlayerController : MonoBehaviour {
 
         if(other.gameObject.CompareTag("Coin"))
         {
-            coins++;
+			coins++;
+			PlayerPrefs.SetInt ("TotalCoins", coins);
             Destroy(other.gameObject);
         }
     }

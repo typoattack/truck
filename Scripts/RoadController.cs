@@ -17,9 +17,9 @@ public class RoadController : MonoBehaviour {
     // Use this for initialization
     void Start()
     {
-        rb = GetComponent<Rigidbody>();
+        //rb = GetComponent<Rigidbody>();
         //isPlayerGrounded = PlayerController.isGrounded;
-        rb.velocity = new Vector3(0, 0, 0);
+        //rb.velocity = new Vector3(0, 0, 0);
         //roadDespawn = GameObject.Find("roadDespawn").transform;
         roadSpawn = GameObject.Find("roadSpawn").transform;
 

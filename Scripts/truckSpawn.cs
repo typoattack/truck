@@ -5,17 +5,20 @@ using UnityEngine;
 public class truckSpawn : MonoBehaviour {
 
     public TruckController truck;
+    public TruckController coin;
     public bool canSpawn = false;
     private float waitTime;
     private float timer = 0.0f;
     private int decider;
     private float truckSpeed;
+    bool wasLastObjectCoin = false;
 
     // Use this for initialization
     void Start ()
     {
         waitTime = Random.Range(2.0f, 5.0f);
         truckSpeed = Random.Range(0.25f, 1.0f);
+        SpawnTruck();
     }
 
     // Update is called once per frame
@@ -25,9 +28,14 @@ public class truckSpawn : MonoBehaviour {
         if (timer > waitTime && canSpawn == true)
         {
             decider = Random.Range(-7, 7);
-            if (decider < -3)
+            if (decider <= -3 || wasLastObjectCoin)
             {
                 SpawnTruck();
+                canSpawn = false;
+            }
+            else if (decider > 5)
+            {
+                SpawnCoin();
                 canSpawn = false;
             }
             timer = timer - waitTime;
@@ -36,7 +44,7 @@ public class truckSpawn : MonoBehaviour {
     
     void OnTriggerExit(Collider other)
     {
-        if (other.gameObject.CompareTag("Truck"))
+        if (other.gameObject.CompareTag("Truck") || other.gameObject.CompareTag("Coin"))
         {
             canSpawn = true;
         }
@@ -45,7 +53,18 @@ public class truckSpawn : MonoBehaviour {
     void SpawnTruck()
     {
         TruckController newTruck = Instantiate(truck, transform.position, transform.rotation) as TruckController;
+        newTruck.gameObject.SetActive(true);
         newTruck.transform.parent = transform.parent;
         newTruck.speed = truckSpeed;
+        wasLastObjectCoin = false;
+    }
+
+    void SpawnCoin()
+    {
+        TruckController newCoin = Instantiate(coin, transform.position, transform.rotation) as TruckController;
+        newCoin.gameObject.SetActive(true);
+        newCoin.transform.parent = transform.parent;
+        newCoin.speed = truckSpeed;
+        wasLastObjectCoin = true;
     }
 }

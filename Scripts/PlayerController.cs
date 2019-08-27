@@ -14,6 +14,7 @@ public class PlayerController : MonoBehaviour {
     private float distance = 0.5f;
     //private Scene currentscene;
     [HideInInspector] public static int score = 0;
+    [HideInInspector] public static int coins = 0;
 
     // Use this for initialization
     void Start ()
@@ -55,6 +56,12 @@ public class PlayerController : MonoBehaviour {
         if(other.gameObject.CompareTag("Score"))
         {
             score++;
+        }
+
+        if(other.gameObject.CompareTag("Coin"))
+        {
+            coins++;
+            Destroy(other.gameObject);
         }
     }
 

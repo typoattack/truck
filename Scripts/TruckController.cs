@@ -12,11 +12,12 @@ public class TruckController : MonoBehaviour {
     {
         rb = GetComponent<Rigidbody>();
         rb.velocity = transform.right * speed;
+        if (gameObject.tag == "Coin") transform.Rotate(new Vector3(90, 0, 0));
     }
 	
 	// Update is called once per frame
 	void Update ()
     {
-		
-	}
+		if (gameObject.tag == "Coin") transform.Rotate(new Vector3(0, 0, 45) * Time.deltaTime);
+    }
 }

@@ -46,7 +46,7 @@ GameObject:
   - component: {fileID: 114550824864150082}
   m_Layer: 0
   m_Name: RoadLR
-  m_TagString: Untagged
+  m_TagString: Road
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -542,6 +542,7 @@ MonoBehaviour:
   truck: {fileID: 114307174873417314, guid: 64543c16c39f06a429407df9e3bbf107, type: 2}
   coin: {fileID: 114397795508159472}
   canSpawn: 0
+  isParentGround: 0
 --- !u!114 &114245102500593976
 MonoBehaviour:
   m_ObjectHideFlags: 1

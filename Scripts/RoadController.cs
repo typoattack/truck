@@ -50,7 +50,7 @@ public class RoadController : MonoBehaviour {
         float step = speed * Time.deltaTime;
         transform.position = Vector3.MoveTowards(transform.position, destination, step);
 
-        if (transform.position.z <= -9.5f)
+        if (transform.position.z <= -2.5f)
         {
             roadSpawn.gameObject.SendMessage("SpawnGround", 35);
             Destroy(gameObject);

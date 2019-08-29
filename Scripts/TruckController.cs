@@ -19,5 +19,6 @@ public class TruckController : MonoBehaviour {
 	void Update ()
     {
 		if (gameObject.tag == "Coin") transform.Rotate(new Vector3(0, 0, 45) * Time.deltaTime);
+        if (transform.position.z <= -2.0f) Destroy(gameObject);
     }
 }

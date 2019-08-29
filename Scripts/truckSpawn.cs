@@ -12,34 +12,50 @@ public class truckSpawn : MonoBehaviour {
     private int decider;
     private float truckSpeed;
     bool wasLastObjectCoin = false;
+    public bool isParentGround = false;
+    bool canTractorSpawn = true;
 
     // Use this for initialization
     void Start ()
     {
         waitTime = Random.Range(2.0f, 5.0f);
         truckSpeed = Random.Range(0.25f, 1.0f);
-        SpawnTruck();
+        if (transform.parent.CompareTag("Ground")) isParentGround = true;
+        else SpawnTruck();
     }
 
     // Update is called once per frame
     void Update()
     {
         timer += Time.deltaTime;
-        if (timer > waitTime && canSpawn == true)
+        if(isParentGround == false)
         {
-            decider = Random.Range(-7, 7);
-            if (decider <= -3 || wasLastObjectCoin)
+            if (timer > waitTime && canSpawn)
             {
-                SpawnTruck();
-                canSpawn = false;
+                decider = Random.Range(-7, 7);
+                if (decider <= -3 || wasLastObjectCoin)
+                {
+                    SpawnTruck();
+                    canSpawn = false;
+                }
+                else if (decider > 5)
+                {
+                    SpawnCoin();
+                    canSpawn = false;
+                }
+                timer = timer - waitTime;
             }
-            else if (decider > 5)
-            {
-                SpawnCoin();
-                canSpawn = false;
-            }
-            timer = timer - waitTime;
         }
+        else
+        {
+            if (transform.parent.transform.position.z == 0.0f && canTractorSpawn)
+            {
+                truckSpeed = 0.2f;
+                SpawnTruck();
+                canTractorSpawn = false;
+            }
+        }
+        if (transform.position.z <= -2.0f) Destroy(gameObject);
     }
     
     void OnTriggerExit(Collider other)

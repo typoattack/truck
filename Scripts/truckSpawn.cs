@@ -19,7 +19,7 @@ public class truckSpawn : MonoBehaviour {
     void Start ()
     {
         waitTime = Random.Range(2.0f, 5.0f);
-        truckSpeed = Random.Range(0.25f, 1.0f);
+        truckSpeed = Random.Range(0.5f, 1.0f);
         if (transform.parent.CompareTag("Ground")) isParentGround = true;
         else SpawnTruck();
     }
@@ -34,7 +34,8 @@ public class truckSpawn : MonoBehaviour {
             {
                 decider = Random.Range(-7, 7);
                 if (decider <= -3 || wasLastObjectCoin)
-                {
+				{
+					truckSpeed = Random.Range(0.5f, 1.0f);
                     SpawnTruck();
                     canSpawn = false;
                 }
@@ -43,7 +44,7 @@ public class truckSpawn : MonoBehaviour {
                     SpawnCoin();
                     canSpawn = false;
                 }
-                timer = timer - waitTime;
+                timer = 0;
             }
         }
         else
@@ -59,8 +60,8 @@ public class truckSpawn : MonoBehaviour {
     }
     
     void OnTriggerExit(Collider other)
-    {
-        if (other.gameObject.CompareTag("Truck") || other.gameObject.CompareTag("Coin"))
+	{
+        if (other.gameObject.CompareTag("crumpleZone"))
         {
             canSpawn = true;
         }

@@ -15,14 +15,13 @@ public class truckSpawn : MonoBehaviour {
     public bool isParentGround = false;
     bool canTractorSpawn = true;
 	private float minTruckSpeed;
-	private float maxSpeedRange = 0.5f;
 
     // Use this for initialization
     void Start ()
     {
 		waitTime = Random.Range(2.0f, 5.0f);
 		minTruckSpeed = Random.Range(.25f, .5f);
-		truckSpeed = Random.Range(minTruckSpeed, minTruckSpeed + maxSpeedRange);
+		truckSpeed = Random.Range(minTruckSpeed, minTruckSpeed*2);
         if (transform.parent.CompareTag("Ground")) isParentGround = true;
         else SpawnTruck();
     }
@@ -38,7 +37,7 @@ public class truckSpawn : MonoBehaviour {
                 decider = Random.Range(-7, 7);
                 if (decider <= -3 || wasLastObjectCoin)
 				{
-					truckSpeed = Random.Range(minTruckSpeed, minTruckSpeed + maxSpeedRange);
+					truckSpeed = Random.Range(minTruckSpeed, minTruckSpeed*2);
                     SpawnTruck();
                     canSpawn = false;
                 }

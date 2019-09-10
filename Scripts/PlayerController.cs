@@ -27,6 +27,7 @@ public class PlayerController : MonoBehaviour {
 		} else {
 			coins = PlayerPrefs.GetInt ("TotalCoins");
 		}
+        Time.timeScale = 5.0f;
     }
 	
 	// Update is called once per frame

@@ -15,6 +15,7 @@ public class truckSpawn : MonoBehaviour {
     public bool isParentGround = false;
     bool canTractorSpawn = true;
 	private float minTruckSpeed;
+    bool coinSpawned = false;
 
     // Use this for initialization
     void Start ()
@@ -41,10 +42,11 @@ public class truckSpawn : MonoBehaviour {
                     SpawnTruck();
                     canSpawn = false;
                 }
-                else if (decider > 5)
+                else if (!coinSpawned && decider > 5)
                 {
                     SpawnCoin();
                     canSpawn = false;
+                    coinSpawned = true;
                 }
                 timer = 0;
             }
@@ -63,7 +65,7 @@ public class truckSpawn : MonoBehaviour {
     
     void OnTriggerExit(Collider other)
 	{
-        if (other.gameObject.CompareTag("crumpleZone"))
+        if (other.gameObject.CompareTag("crumpleZone") || other.gameObject.CompareTag("Coin"))
         {
             canSpawn = true;
         }

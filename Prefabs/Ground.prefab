@@ -186,7 +186,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: 142bc43a33f25a64aa669dbc8743d845, type: 2}
+  - {fileID: 2100000, guid: 4000ddcf53c6bd5438e8ee449021a120, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -423,6 +423,7 @@ MonoBehaviour:
   truck: {fileID: 114307174873417314, guid: 64543c16c39f06a429407df9e3bbf107, type: 2}
   coin: {fileID: 0}
   canSpawn: 0
+  isParentGround: 0
 --- !u!114 &114730950538243362
 MonoBehaviour:
   m_ObjectHideFlags: 1

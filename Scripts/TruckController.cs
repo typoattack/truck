@@ -6,11 +6,13 @@ public class TruckController : MonoBehaviour {
 
     private Rigidbody rb;
     public float speed = 1.0f;
+	private Vector3 direction;
 
     // Use this for initialization
     void Start ()
     {
         rb = GetComponent<Rigidbody>();
+		direction = transform.right;
         rb.velocity = transform.right * speed;
         if (gameObject.tag == "Coin") transform.Rotate(new Vector3(90, 0, 0));
     }
@@ -20,5 +22,13 @@ public class TruckController : MonoBehaviour {
     {
 		if (gameObject.tag == "Coin") transform.Rotate(new Vector3(0, 0, 45) * Time.deltaTime);
         if (transform.position.z <= -2.0f) Destroy(gameObject);
-    }
+	}
+
+	void OnTriggerStay(Collider other)
+	{
+		if (other.gameObject.CompareTag ("crumpleZone")) {
+			speed = other.transform.parent.gameObject.GetComponent<Rigidbody> ().velocity.magnitude;
+			rb.velocity = direction * speed;
+		} 
+	}
 }

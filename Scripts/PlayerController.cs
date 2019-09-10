@@ -7,7 +7,10 @@ using UnityEngine.UI;
 public class PlayerController : MonoBehaviour {
 
     private Rigidbody rb;
-    [HideInInspector] public static bool jump = false;
+    private bool jump = false;
+    [HideInInspector] public static bool forwardMotion = false;
+    private bool canMoveLeft = false;
+    private bool canMoveRight = false;
     public LayerMask Ground;
     [HideInInspector] public static bool isGrounded = true;
     private Vector3 dir = Vector3.down;
@@ -15,12 +18,13 @@ public class PlayerController : MonoBehaviour {
     //private Scene currentscene;
     [HideInInspector] public static int score = 0;
     [HideInInspector] public static int coins = 0;
+    private Vector3 destination;
+    private float speed = 1.0f;
 
     // Use this for initialization
     void Start ()
     {
         rb = GetComponent<Rigidbody>();
-        //currentscene = SceneManager.GetActiveScene();
         score = 0;
 		if (!PlayerPrefs.HasKey ("TotalCoins")) {
 			PlayerPrefs.SetInt ("TotalCoins", 0);
@@ -34,11 +38,31 @@ public class PlayerController : MonoBehaviour {
 	void Update ()
     {
         isGrounded = Physics.Raycast(transform.position, dir, distance, Ground);
+        if (transform.position.x <= -0.5f) canMoveLeft = false;
+        else canMoveLeft = true;
+        if (transform.position.x >= 0.5f) canMoveRight = false;
+        else canMoveRight = true;
 
         if (Input.GetKeyDown("w") && isGrounded)
         {
             jump = true;
+            forwardMotion = true;
         }
+
+        if (Input.GetKeyDown("a") && canMoveLeft && isGrounded)
+        {
+            jump = true;
+            destination = new Vector3(transform.position.x - 1.0f, transform.position.y, transform.position.z);
+        }
+
+        if (Input.GetKeyDown("d") && canMoveRight && isGrounded)
+        {
+            jump = true;
+            destination = new Vector3(transform.position.x + 1.0f, transform.position.y, transform.position.z);
+        }
+
+        float step = speed * Time.deltaTime;
+        transform.position = Vector3.MoveTowards(transform.position, destination, step);
     }
 
     void FixedUpdate()
@@ -46,9 +70,11 @@ public class PlayerController : MonoBehaviour {
         if (jump)
         {
 			rb.velocity = new Vector3 (0f, 0f, 0f);
-            rb.AddForce(new Vector3(0f, 5.555f, 0f), ForceMode.Impulse);
+            rb.AddForce(new Vector3(0f, 5f, 0f), ForceMode.Impulse);
             jump = false;
         }
+
+        if (forwardMotion) forwardMotion = false;
     }
 
     void OnTriggerEnter(Collider other)

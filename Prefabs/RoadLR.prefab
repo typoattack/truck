@@ -43,7 +43,7 @@ GameObject:
   - component: {fileID: 136006062986786144}
   - component: {fileID: 23942556412929218}
   - component: {fileID: 54047014283676800}
-  - component: {fileID: 114593100915901014}
+  - component: {fileID: 114207756919322650}
   m_Layer: 0
   m_Name: Coin
   m_TagString: Coin
@@ -540,9 +540,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   truck: {fileID: 114307174873417314, guid: 64543c16c39f06a429407df9e3bbf107, type: 2}
-  coin: {fileID: 114593100915901014}
+  coin: {fileID: 114207756919322650}
   canSpawn: 0
   isParentGround: 0
+--- !u!114 &114207756919322650
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1403625322954646}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fd7d20930522dcf4fabb9708151ee561, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 1
 --- !u!114 &114245102500593976
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -567,18 +579,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   roadSpawn: {fileID: 0}
---- !u!114 &114593100915901014
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1403625322954646}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 251fe9edfe4c4114b8cf5661acccf192, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  speed: 1
 --- !u!136 &136006062986786144
 CapsuleCollider:
   m_ObjectHideFlags: 1

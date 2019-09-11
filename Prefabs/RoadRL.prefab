@@ -131,7 +131,7 @@ GameObject:
   - component: {fileID: 136770080621720636}
   - component: {fileID: 23186785630124992}
   - component: {fileID: 54906630094777118}
-  - component: {fileID: 114184693790810164}
+  - component: {fileID: 114910904378961090}
   m_Layer: 0
   m_Name: Coin
   m_TagString: Coin
@@ -517,18 +517,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 40, y: 5, z: 0.1}
   m_Center: {x: 0, y: 1.5, z: 0}
---- !u!114 &114184693790810164
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1887323021227570}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 251fe9edfe4c4114b8cf5661acccf192, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  speed: 1
 --- !u!114 &114628902252298300
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -552,6 +540,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6eea73533f82e6f47bd674717f02917b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &114910904378961090
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1887323021227570}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fd7d20930522dcf4fabb9708151ee561, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 1
 --- !u!114 &114946498148517810
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -576,7 +576,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   truck: {fileID: 114307174873417314, guid: 64543c16c39f06a429407df9e3bbf107, type: 2}
-  coin: {fileID: 114184693790810164}
+  coin: {fileID: 114910904378961090}
   canSpawn: 0
   isParentGround: 0
 --- !u!136 &136770080621720636

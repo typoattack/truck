@@ -15,7 +15,6 @@ public class truckSpawn : MonoBehaviour {
     public bool isParentGround = false;
     bool canTractorSpawn = true;
 	private float minTruckSpeed;
-    bool coinSpawned = false;
 
     // Use this for initialization
     void Start ()

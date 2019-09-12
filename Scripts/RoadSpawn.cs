@@ -32,12 +32,12 @@ public class RoadSpawn : MonoBehaviour {
     
     void SpawnGround(int i)
     {
-        groundDecider = Random.Range(-7, 7);
+        groundDecider = Random.Range(0, 10);
         rotationDecider = Random.Range(-7, 7);
 
         Vector3 pos = new Vector3(transform.position.x, transform.position.y, i);
 
-        if (groundDecider <= 0 || roadCount > 2)
+        if (groundDecider <= 2 || roadCount > 2)
         {
             Instantiate(ground, pos, transform.rotation);
             roadCount = 0;

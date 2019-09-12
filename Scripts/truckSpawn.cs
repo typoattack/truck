@@ -5,7 +5,7 @@ using UnityEngine;
 public class truckSpawn : MonoBehaviour {
 
     public TruckController truck;
-    public TruckController coin;
+    public CoinController coin;
     public bool canSpawn = false;
     private float waitTime;
     private float timer = 0.0f;
@@ -23,7 +23,13 @@ public class truckSpawn : MonoBehaviour {
 		waitTime = Random.Range(2.0f, 5.0f);
 		minTruckSpeed = Random.Range(.25f, .5f);
 		truckSpeed = Random.Range(minTruckSpeed, minTruckSpeed*2);
+        decider = Random.Range(0, 10);
         if (transform.parent.CompareTag("Ground")) isParentGround = true;
+        else if (decider >= 7)
+        {
+            SpawnCoin();
+            canSpawn = false;
+        }
         else SpawnTruck();
     }
 
@@ -42,23 +48,14 @@ public class truckSpawn : MonoBehaviour {
                     SpawnTruck();
                     canSpawn = false;
                 }
-                else if (!coinSpawned && decider > 5)
-                {
-                    SpawnCoin();
-                    canSpawn = false;
-                    coinSpawned = true;
-                }
                 timer = 0;
             }
         }
-        else
+        else if (transform.parent.transform.position.z == 0.0f && canTractorSpawn)
         {
-            if (transform.parent.transform.position.z == 0.0f && canTractorSpawn)
-            {
-                truckSpeed = 0.2f;
-                SpawnTruck();
-                canTractorSpawn = false;
-            }
+            truckSpeed = 0.2f;
+            SpawnTruck();
+            canTractorSpawn = false;
         }
         if (transform.position.z <= -2.0f) Destroy(gameObject);
     }
@@ -82,7 +79,7 @@ public class truckSpawn : MonoBehaviour {
 
     void SpawnCoin()
     {
-        TruckController newCoin = Instantiate(coin, transform.position, transform.rotation) as TruckController;
+        CoinController newCoin = Instantiate(coin, transform.position, transform.rotation) as CoinController;
         newCoin.gameObject.SetActive(true);
         newCoin.transform.parent = transform.parent;
         newCoin.speed = truckSpeed;

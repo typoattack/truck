@@ -26,6 +26,7 @@ public class PlayerController : MonoBehaviour {
     private AudioSource audio;
     public AudioClip jumpSound;
     public AudioClip hitByTruckSound;
+    public AudioClip collectCoinSound;
 
     // Use this for initialization
     void Start ()
@@ -105,6 +106,7 @@ public class PlayerController : MonoBehaviour {
 
         if(other.gameObject.CompareTag("Coin"))
         {
+            audio.PlayOneShot(collectCoinSound, 1.0f);
 			coins++;
 			PlayerPrefs.SetInt ("TotalCoins", coins);
             Destroy(other.gameObject);

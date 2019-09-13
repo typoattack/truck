@@ -13,9 +13,9 @@ public class ScoreText : MonoBehaviour {
         SetScoreText();
     }
 
-    private void FixedUpdate()
+    private void Update()
     {
-        if (Input.GetKeyUp(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space))
             SceneManager.LoadScene("Main", LoadSceneMode.Single);
     }
 

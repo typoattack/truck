@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class PlayerController : MonoBehaviour {
 
     private Rigidbody rb;
+
     private bool jump = false;
     [HideInInspector] public static bool forwardMotion = false;
     private bool canMoveLeft = false;
@@ -15,16 +16,22 @@ public class PlayerController : MonoBehaviour {
     [HideInInspector] public static bool isGrounded = true;
     private Vector3 dir = Vector3.down;
     private float distance = 0.5f;
-    //private Scene currentscene;
+
     [HideInInspector] public static int score = 0;
     [HideInInspector] public static int coins = 0;
+
     private Vector3 destination;
     private float speed = 1.0f;
+
+    private AudioSource audio;
+    public AudioClip jumpSound;
+    public AudioClip hitByTruckSound;
 
     // Use this for initialization
     void Start ()
     {
         rb = GetComponent<Rigidbody>();
+        audio = GetComponent<AudioSource>();
         score = 0;
 		if (!PlayerPrefs.HasKey ("TotalCoins")) {
 			PlayerPrefs.SetInt ("TotalCoins", 0);
@@ -71,6 +78,7 @@ public class PlayerController : MonoBehaviour {
         {
 			rb.velocity = new Vector3 (0f, 0f, 0f);
             rb.AddForce(new Vector3(0f, 5f, 0f), ForceMode.Impulse);
+            audio.PlayOneShot(jumpSound, 1.0f);
             jump = false;
         }
 
@@ -81,8 +89,13 @@ public class PlayerController : MonoBehaviour {
     {
         if (other.gameObject.CompareTag("Truck"))
         {
-            //Destroy(gameObject);
-            SceneManager.LoadScene("Score", LoadSceneMode.Single);
+            //Time.timeScale = 1.0f;
+            audio.PlayOneShot(hitByTruckSound, 1.0f);
+            StartCoroutine(DelayTime(0.3f));
+            Time.timeScale = 0.2f;
+            rb.AddForce(other.gameObject.GetComponent<Rigidbody>().velocity *20.0f, ForceMode.Impulse);
+            rb.AddForce(new Vector3(0f, 10f, 0f), ForceMode.Impulse);
+            //SceneManager.LoadScene("Score", LoadSceneMode.Single);
         }
 
         if(other.gameObject.CompareTag("Score"))
@@ -96,6 +109,14 @@ public class PlayerController : MonoBehaviour {
 			PlayerPrefs.SetInt ("TotalCoins", coins);
             Destroy(other.gameObject);
         }
+    }
+
+    IEnumerator DelayTime(float duration)
+    {
+        yield return new WaitForSeconds(duration);
+        Time.timeScale = 1f;
+        //gameObject.SetActive(false);
+        SceneManager.LoadScene("Score", LoadSceneMode.Single);
     }
 
 }

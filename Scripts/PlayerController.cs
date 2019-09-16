@@ -21,7 +21,7 @@ public class PlayerController : MonoBehaviour {
     [HideInInspector] public static int coins = 0;
 
     private Vector3 destination;
-    private float speed = 1.0f;
+    private float speed = 2.5f;
 
     private AudioSource audio;
     public AudioClip jumpSound;
@@ -78,7 +78,7 @@ public class PlayerController : MonoBehaviour {
         if (jump)
         {
 			rb.velocity = new Vector3 (0f, 0f, 0f);
-            rb.AddForce(new Vector3(0f, 5f, 0f), ForceMode.Impulse);
+            rb.AddForce(new Vector3(0f, 7f, 0f), ForceMode.Impulse);
             audio.PlayOneShot(jumpSound, 1.0f);
             jump = false;
         }

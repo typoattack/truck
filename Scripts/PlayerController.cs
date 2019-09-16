@@ -45,6 +45,10 @@ public class PlayerController : MonoBehaviour {
 	// Update is called once per frame
 	void Update ()
     {
+        //////////////// For debug purpose /////////////////////
+        if (Input.GetKeyDown("r")) PlayerPrefs.SetInt("TotalCoins", 0);
+
+
         isGrounded = Physics.Raycast(transform.position, dir, distance, Ground);
         if (transform.position.x <= -0.5f) canMoveLeft = false;
         else canMoveLeft = true;

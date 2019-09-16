@@ -6,7 +6,7 @@ public class RoadController : MonoBehaviour {
 
     private Rigidbody rb;
     public Transform roadSpawn;
-    private float speed = 1.0f;
+    private float speed = 2.5f;
 
     private bool isPlayerMovingForward;
     private Vector3 destination;

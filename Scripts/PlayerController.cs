@@ -6,27 +6,45 @@ using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour {
 
+    //RigidBody
     private Rigidbody rb;
 
+    //Jump flags and variables
     private bool jump = false;
-    [HideInInspector] public static bool forwardMotion = false;
-    private bool canMoveLeft = false;
-    private bool canMoveRight = false;
     public LayerMask Ground;
     [HideInInspector] public static bool isGrounded = true;
     private Vector3 dir = Vector3.down;
-    private float distance = 0.5f;
+    private float groundedDistance;
 
+    //Score
     [HideInInspector] public static int score = 0;
     [HideInInspector] public static int coins = 0;
 
+    //Movement flags and variables
+    [HideInInspector] public static bool forwardMotion = false;
+    private bool canMoveLeft = false;
+    private bool canMoveRight = false;
     private Vector3 destination;
-    private float speed = 2.5f;
+    [HideInInspector] public static float speed;
+    private float jumpForce;
+    [HideInInspector] public static float distanceToMove;
 
+    //Abilities and powerups
+    private bool jumpTwoSpaces = false; // jump forward two spaces--cheerleader or Mario outfit
+    private bool fastMovement = false; // faster movement--track and field outfit
+    private bool invisibility = false; // player disappears, cannot be hit by trucks for certain time--ninja outfit
+    private bool canDestroyTruck = false; // player can destroy trucks--delinquent outfit
+    private bool endurance = false; // player can take one truck hit--zombie outfit
+    private bool timeFreeze = false; // player can stop all trucks for certain time--Jojos tribute outfit
+    private bool destroyAllTrucks = false; // player can destroy all trucks on screen--magical girl outfit
+
+    //Audio
     private AudioSource audio;
     public AudioClip jumpSound;
     public AudioClip hitByTruckSound;
     public AudioClip collectCoinSound;
+
+
 
     // Use this for initialization
     void Start ()
@@ -40,6 +58,13 @@ public class PlayerController : MonoBehaviour {
 			coins = PlayerPrefs.GetInt ("TotalCoins");
 		}
         Time.timeScale = 5.0f;
+
+        jumpTwoSpaces = fastMovement = invisibility = canDestroyTruck = endurance = timeFreeze = destroyAllTrucks = false;
+        groundedDistance = 0.5f;
+        speed = 2.5f;
+        jumpForce = 7.0f;
+        distanceToMove = 1.0f;
+
     }
 	
 	// Update is called once per frame
@@ -48,8 +73,33 @@ public class PlayerController : MonoBehaviour {
         //////////////// For debug purpose /////////////////////
         if (Input.GetKeyDown("r")) PlayerPrefs.SetInt("TotalCoins", 0);
 
+        if (Input.GetKeyDown("1"))
+        {
+            jumpTwoSpaces = true;
+            speed = 2.5f;
+            jumpForce = 10.0f;
+            distanceToMove = 2.0f;
+            fastMovement = invisibility = canDestroyTruck = endurance = timeFreeze = destroyAllTrucks = false;
+        }
 
-        isGrounded = Physics.Raycast(transform.position, dir, distance, Ground);
+        if (Input.GetKeyDown("2"))
+        {
+            fastMovement = true;
+            speed = 5.0f;
+            jumpForce = 3.5f;
+            distanceToMove = 1.0f;
+            jumpTwoSpaces = invisibility = canDestroyTruck = endurance = timeFreeze = destroyAllTrucks = false;
+        }
+        /*
+        if (Input.GetKeyDown("3"))
+        {
+            invisibility = true;
+            jumpTwoSpaces = fastMovement = canDestroyTruck = endurance = timeFreeze = destroyAllTrucks = false;
+        }
+        */
+        ////////////////    Debug end      /////////////////////
+
+        isGrounded = Physics.Raycast(transform.position, dir, groundedDistance, Ground);
         if (transform.position.x <= -0.5f) canMoveLeft = false;
         else canMoveLeft = true;
         if (transform.position.x >= 0.5f) canMoveRight = false;
@@ -82,7 +132,7 @@ public class PlayerController : MonoBehaviour {
         if (jump)
         {
 			rb.velocity = new Vector3 (0f, 0f, 0f);
-            rb.AddForce(new Vector3(0f, 7f, 0f), ForceMode.Impulse);
+            rb.AddForce(new Vector3(0f, jumpForce, 0f), ForceMode.Impulse);
             audio.PlayOneShot(jumpSound, 1.0f);
             jump = false;
         }
@@ -92,8 +142,14 @@ public class PlayerController : MonoBehaviour {
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("Truck"))
+        if (other.gameObject.CompareTag("Truck") && !invisibility)
         {
+            if (endurance)
+            {
+                Destroy(other.gameObject);
+                endurance = false;
+                return;
+            }
             //Time.timeScale = 1.0f;
             audio.PlayOneShot(hitByTruckSound, 1.0f);
             StartCoroutine(DelayTime(0.3f));

@@ -31,18 +31,28 @@ public class PlayerController : MonoBehaviour {
 
     //Abilities and powerups
     private bool jumpTwoSpaces = false; // jump forward two spaces--cheerleader or Mario outfit
+
     private bool fastMovement = false; // faster movement--track and field outfit
+
     private bool invisibility = false; // player disappears, cannot be hit by trucks for certain time--ninja outfit
+
     private bool canDestroyTruck = false; // player can destroy trucks--delinquent outfit
+    [HideInInspector] public static float tractorSpeed;
+
     private bool endurance = false; // player can take one truck hit--zombie outfit
+
     private bool timeFreeze = false; // player can stop all trucks for certain time--Jojos tribute outfit
+
     private bool destroyAllTrucks = false; // player can destroy all trucks on screen--magical girl outfit
+
+    private int counter;
 
     //Audio
     private AudioSource audio;
     public AudioClip jumpSound;
     public AudioClip hitByTruckSound;
     public AudioClip collectCoinSound;
+    public AudioClip truckDestroyed;
 
 
 
@@ -64,6 +74,8 @@ public class PlayerController : MonoBehaviour {
         speed = 2.5f;
         jumpForce = 7.0f;
         distanceToMove = 1.0f;
+        tractorSpeed = 0.2f;
+        counter = 0;
 
     }
 	
@@ -93,8 +105,36 @@ public class PlayerController : MonoBehaviour {
         /*
         if (Input.GetKeyDown("3"))
         {
-            invisibility = true;
+            if (counter <= 0) MakeInvisible(10);
             jumpTwoSpaces = fastMovement = canDestroyTruck = endurance = timeFreeze = destroyAllTrucks = false;
+        }
+        */
+
+        if (Input.GetKeyDown("4"))
+        {
+            canDestroyTruck = true;
+            tractorSpeed += 0.2f;
+            jumpTwoSpaces = fastMovement = invisibility = endurance = timeFreeze = destroyAllTrucks = false;
+        }
+
+        if (Input.GetKeyDown("5"))
+        {
+            endurance = true;
+            jumpTwoSpaces = fastMovement = invisibility = canDestroyTruck = timeFreeze = destroyAllTrucks = false;
+        }
+        /*
+        if (Input.GetKeyDown("6"))
+        {
+            if (counter <= 0) StopTrucks();
+            jumpTwoSpaces = fastMovement = invisibility = canDestroyTruck = endurance = destroyAllTrucks = false;
+        }
+        
+        if (Input.GetKeyDown("7"))
+        {
+            destroyAllTrucks = true;
+            Nuke();
+            tractorSpeed += 0.2f;
+            jumpTwoSpaces = fastMovement = invisibility = canDestroyTruck = endurance = timeFreeze = false;
         }
         */
         ////////////////    Debug end      /////////////////////
@@ -146,6 +186,7 @@ public class PlayerController : MonoBehaviour {
         {
             if (endurance)
             {
+                audio.PlayOneShot(truckDestroyed, 1.0f);
                 Destroy(other.gameObject);
                 endurance = false;
                 return;
@@ -162,6 +203,7 @@ public class PlayerController : MonoBehaviour {
         if(other.gameObject.CompareTag("Score"))
         {
             score++;
+            if (counter > 0) counter--;
         }
 
         if(other.gameObject.CompareTag("Coin"))
@@ -180,5 +222,20 @@ public class PlayerController : MonoBehaviour {
         //gameObject.SetActive(false);
         SceneManager.LoadScene("Score", LoadSceneMode.Single);
     }
-
+    /*
+    IEnumerator MakeInvisible(float duration)
+    {
+        invisibility = true;
+        yield return new WaitForSeconds(duration);
+        invisibility = false;
+        counter = 10;
+    }
+    */
+    IEnumerator StopTrucks(float duration)
+    {
+        timeFreeze = true;
+        yield return new WaitForSeconds(duration);
+        timeFreeze = false;
+        counter = 10;
+    }
 }

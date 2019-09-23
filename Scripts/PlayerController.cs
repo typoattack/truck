@@ -128,15 +128,15 @@ public class PlayerController : MonoBehaviour {
             if (counter <= 0) StopTrucks();
             jumpTwoSpaces = fastMovement = invisibility = canDestroyTruck = endurance = destroyAllTrucks = false;
         }
-        
+        */
         if (Input.GetKeyDown("7"))
         {
             destroyAllTrucks = true;
-            Nuke();
-            tractorSpeed += 0.2f;
+            if (counter <= 0) Nuke();
+            //tractorSpeed += 0.2f;
             jumpTwoSpaces = fastMovement = invisibility = canDestroyTruck = endurance = timeFreeze = false;
         }
-        */
+        
         ////////////////    Debug end      /////////////////////
 
         isGrounded = Physics.Raycast(transform.position, dir, groundedDistance, Ground);
@@ -237,5 +237,17 @@ public class PlayerController : MonoBehaviour {
         yield return new WaitForSeconds(duration);
         timeFreeze = false;
         counter = 10;
+    }
+
+    private void Nuke()
+    {
+        GameObject[] allTrucks;
+        allTrucks = GameObject.FindGameObjectsWithTag("Truck");
+        for (int i = 0; i < allTrucks.Length; i++)
+        {
+            Destroy(allTrucks[i]);
+        }
+        audio.PlayOneShot(truckDestroyed, 5.0f);
+        counter = 20;
     }
 }

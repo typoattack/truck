@@ -512,6 +512,7 @@ MonoBehaviour:
   jumpSound: {fileID: 8300000, guid: bc0ebd760844c31478025341cb11ddad, type: 3}
   hitByTruckSound: {fileID: 8300000, guid: 72f607c29e070b04397e7fe7198d7a72, type: 3}
   collectCoinSound: {fileID: 8300000, guid: e8c7857162c2f5947bfffa6c2b990ae3, type: 3}
+  truckDestroyed: {fileID: 8300000, guid: ac263e2d1421a4e43be72e8935839d1f, type: 3}
 --- !u!82 &1217272634
 AudioSource:
   m_ObjectHideFlags: 0

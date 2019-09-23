@@ -40,6 +40,8 @@ public class PlayerController : MonoBehaviour {
     [HideInInspector] public static float tractorSpeed;
 
     private bool endurance = false; // player can take one truck hit--zombie outfit
+    private bool canActivateEndurance = true;
+    private int HP;
 
     private bool timeFreeze = false; // player can stop all trucks for certain time--Jojos tribute outfit
 
@@ -76,6 +78,7 @@ public class PlayerController : MonoBehaviour {
         distanceToMove = 1.0f;
         tractorSpeed = 0.2f;
         counter = 0;
+        HP = 2;
 
     }
 	
@@ -88,53 +91,56 @@ public class PlayerController : MonoBehaviour {
         if (Input.GetKeyDown("1"))
         {
             jumpTwoSpaces = true;
+            fastMovement = invisibility = canDestroyTruck = endurance = timeFreeze = destroyAllTrucks = false;
             speed = 2.5f;
             jumpForce = 10.0f;
-            distanceToMove = 2.0f;
-            fastMovement = invisibility = canDestroyTruck = endurance = timeFreeze = destroyAllTrucks = false;
+            distanceToMove = 2.0f;            
         }
 
         if (Input.GetKeyDown("2"))
         {
             fastMovement = true;
+            jumpTwoSpaces = invisibility = canDestroyTruck = endurance = timeFreeze = destroyAllTrucks = false;
             speed = 5.0f;
             jumpForce = 3.5f;
-            distanceToMove = 1.0f;
-            jumpTwoSpaces = invisibility = canDestroyTruck = endurance = timeFreeze = destroyAllTrucks = false;
+            distanceToMove = 1.0f;            
         }
         /*
         if (Input.GetKeyDown("3"))
         {
-            if (counter <= 0) MakeInvisible(10);
+            invisibility = true;
             jumpTwoSpaces = fastMovement = canDestroyTruck = endurance = timeFreeze = destroyAllTrucks = false;
+            if (counter <= 0) MakeInvisible(10);            
         }
         */
 
         if (Input.GetKeyDown("4"))
         {
             canDestroyTruck = true;
-            tractorSpeed += 0.2f;
             jumpTwoSpaces = fastMovement = invisibility = endurance = timeFreeze = destroyAllTrucks = false;
+            tractorSpeed += 0.2f;            
         }
 
-        if (Input.GetKeyDown("5"))
+        if (Input.GetKeyDown("5") && canActivateEndurance)
         {
             endurance = true;
             jumpTwoSpaces = fastMovement = invisibility = canDestroyTruck = timeFreeze = destroyAllTrucks = false;
+            canActivateEndurance = false;            
         }
-        /*
+        
         if (Input.GetKeyDown("6"))
         {
-            if (counter <= 0) StopTrucks();
+            timeFreeze = true;
             jumpTwoSpaces = fastMovement = invisibility = canDestroyTruck = endurance = destroyAllTrucks = false;
+            if (counter <= 0) affectTruckTemporarily();            
         }
-        */
+        
         if (Input.GetKeyDown("7"))
         {
             destroyAllTrucks = true;
-            if (counter <= 0) Nuke();
-            //tractorSpeed += 0.2f;
             jumpTwoSpaces = fastMovement = invisibility = canDestroyTruck = endurance = timeFreeze = false;
+            if (counter <= 0) affectTruckTemporarily();
+            //tractorSpeed += 0.2f;            
         }
         
         ////////////////    Debug end      /////////////////////
@@ -188,7 +194,8 @@ public class PlayerController : MonoBehaviour {
             {
                 audio.PlayOneShot(truckDestroyed, 1.0f);
                 Destroy(other.gameObject);
-                endurance = false;
+                if (HP > 0) HP--;
+                else endurance = false;
                 return;
             }
             //Time.timeScale = 1.0f;
@@ -231,23 +238,29 @@ public class PlayerController : MonoBehaviour {
         counter = 10;
     }
     */
-    IEnumerator StopTrucks(float duration)
-    {
-        timeFreeze = true;
-        yield return new WaitForSeconds(duration);
-        timeFreeze = false;
-        counter = 10;
-    }
 
-    private void Nuke()
+    private void affectTruckTemporarily()
     {
         GameObject[] allTrucks;
         allTrucks = GameObject.FindGameObjectsWithTag("Truck");
-        for (int i = 0; i < allTrucks.Length; i++)
+        if (destroyAllTrucks)
         {
-            Destroy(allTrucks[i]);
+            for (int i = 0; i < allTrucks.Length; i++)
+            {
+                float positionZ = transform.position.z;
+                float diffZ = allTrucks[i].transform.position.z - positionZ;
+                if (diffZ <= 10.0f) Destroy(allTrucks[i]);
+            }
+            audio.PlayOneShot(truckDestroyed, 5.0f);
+            counter = 30;
         }
-        audio.PlayOneShot(truckDestroyed, 5.0f);
-        counter = 20;
+        if (timeFreeze)
+        {
+            for (int i = 0; i < allTrucks.Length; i++)
+            {
+                allTrucks[i].SendMessage("StopTruckTemporarily", 10.0f);
+            }
+            counter = 20;
+        }
     }
 }

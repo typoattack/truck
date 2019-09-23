@@ -30,4 +30,12 @@ public class TruckController : MonoBehaviour {
 			rb.velocity = direction * speed;
 		} 
 	}
+
+    IEnumerator StopTruckTemporarily(float duration)
+    {
+        rb.velocity = transform.right * 0f;
+        yield return new WaitForSeconds(duration);
+        rb.velocity = transform.right * speed;
+
+    }
 }

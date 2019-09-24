@@ -105,14 +105,12 @@ public class PlayerController : MonoBehaviour {
             jumpForce = 3.5f;
             distanceToMove = 1.0f;            
         }
-        /*
+        
         if (Input.GetKeyDown("3"))
         {
-            invisibility = true;
             jumpTwoSpaces = fastMovement = canDestroyTruck = endurance = timeFreeze = destroyAllTrucks = false;
-            if (counter <= 0) MakeInvisible(10);            
+            if (counter <= 0) StartCoroutine(MakeInvisible(10.0f));            
         }
-        */
 
         if (Input.GetKeyDown("4"))
         {
@@ -229,15 +227,16 @@ public class PlayerController : MonoBehaviour {
         //gameObject.SetActive(false);
         SceneManager.LoadScene("Score", LoadSceneMode.Single);
     }
-    /*
+    
     IEnumerator MakeInvisible(float duration)
     {
         invisibility = true;
+        gameObject.GetComponent<MeshRenderer>().enabled = false;
         yield return new WaitForSeconds(duration);
         invisibility = false;
+        gameObject.GetComponent<MeshRenderer>().enabled = true;
         counter = 10;
     }
-    */
 
     private void affectTruckTemporarily()
     {

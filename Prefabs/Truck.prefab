@@ -23,7 +23,7 @@ GameObject:
   - component: {fileID: 65883436746965348}
   - component: {fileID: 23505533206852930}
   - component: {fileID: 54557352781060602}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Cube
   m_TagString: crumpleZone
   m_Icon: {fileID: 0}
@@ -43,7 +43,7 @@ GameObject:
   - component: {fileID: 23404570067226740}
   - component: {fileID: 54497901241917298}
   - component: {fileID: 114307174873417314}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Truck
   m_TagString: Truck
   m_Icon: {fileID: 0}

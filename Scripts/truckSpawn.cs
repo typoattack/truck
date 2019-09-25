@@ -15,6 +15,7 @@ public class truckSpawn : MonoBehaviour {
     public bool isParentGround = false;
     bool canTractorSpawn = true;
 	private float minTruckSpeed;
+    private float tractorSpeed;
 
     // Use this for initialization
     void Start ()
@@ -22,6 +23,7 @@ public class truckSpawn : MonoBehaviour {
 		waitTime = Random.Range(2.0f, 5.0f);
 		minTruckSpeed = Random.Range(.25f, .5f);
 		truckSpeed = Random.Range(minTruckSpeed, minTruckSpeed*2);
+        tractorSpeed = PlayerController.tractorSpeed;
         decider = Random.Range(0, 10);
         if (transform.parent.CompareTag("Ground")) isParentGround = true;
         else if (decider >= 7)
@@ -35,8 +37,9 @@ public class truckSpawn : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
+        tractorSpeed = PlayerController.tractorSpeed;
         timer += Time.deltaTime;
-        if(isParentGround == false)
+        if(isParentGround == false) // road spawns trucks
         {
             if (timer > waitTime && canSpawn)
             {
@@ -50,9 +53,9 @@ public class truckSpawn : MonoBehaviour {
                 timer = 0;
             }
         }
-        else if (transform.parent.transform.position.z == 0.0f && canTractorSpawn)
+        else if (transform.parent.transform.position.z == 0.0f && canTractorSpawn) // safe zone spawns tractor
         {
-            truckSpeed = 0.2f;
+            truckSpeed = tractorSpeed;
             SpawnTruck();
             canTractorSpawn = false;
         }

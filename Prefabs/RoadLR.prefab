@@ -24,7 +24,7 @@ GameObject:
   - component: {fileID: 23540059972989122}
   - component: {fileID: 54449063616835344}
   - component: {fileID: 114245102500593976}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Truck
   m_TagString: Truck
   m_Icon: {fileID: 0}
@@ -44,7 +44,7 @@ GameObject:
   - component: {fileID: 23942556412929218}
   - component: {fileID: 54047014283676800}
   - component: {fileID: 114207756919322650}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Coin
   m_TagString: Coin
   m_Icon: {fileID: 0}
@@ -80,7 +80,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4324441479283382}
   - component: {fileID: 65373915415038780}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: ScoreTrigger
   m_TagString: Score
   m_Icon: {fileID: 0}
@@ -116,7 +116,7 @@ GameObject:
   - component: {fileID: 114177866720771104}
   m_Layer: 0
   m_Name: truckSpawn
-  m_TagString: Truck
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

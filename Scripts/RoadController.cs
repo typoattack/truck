@@ -6,10 +6,11 @@ public class RoadController : MonoBehaviour {
 
     private Rigidbody rb;
     public Transform roadSpawn;
-    private float speed = 2.5f;
+    private float speed;
 
     private bool isPlayerMovingForward;
     private Vector3 destination;
+    private float distanceToMove;
 
     // Use this for initialization
     void Start()
@@ -18,6 +19,8 @@ public class RoadController : MonoBehaviour {
 
         isPlayerMovingForward = PlayerController.forwardMotion;
         destination = transform.position;
+        speed = PlayerController.speed;
+        distanceToMove = PlayerController.distanceToMove;
     }
 	
 	// Update is called once per frame
@@ -25,9 +28,12 @@ public class RoadController : MonoBehaviour {
     {
 
         isPlayerMovingForward = PlayerController.forwardMotion;
+        speed = PlayerController.speed;
+        distanceToMove = PlayerController.distanceToMove;
+
         if (isPlayerMovingForward)
         {
-            destination = new Vector3(transform.position.x, transform.position.y, transform.position.z - 1.0f);
+            destination = new Vector3(transform.position.x, transform.position.y, transform.position.z - distanceToMove);
         }
         
         float step = speed * Time.deltaTime;

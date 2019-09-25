@@ -87,4 +87,12 @@ public class truckSpawn : MonoBehaviour {
         newCoin.speed = truckSpeed;
         wasLastObjectCoin = true;
     }
+
+    IEnumerator StopSpawnTemporarily(float duration)
+    {
+        bool oldSpawnFlag = canSpawn;
+        canSpawn = false;
+        yield return new WaitForSeconds(duration);
+        canSpawn = oldSpawnFlag;
+    }
 }

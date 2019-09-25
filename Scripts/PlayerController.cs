@@ -35,6 +35,7 @@ public class PlayerController : MonoBehaviour {
     private bool fastMovement = false; // faster movement--track and field outfit
 
     private bool invisibility = false; // player disappears, cannot be hit by trucks for certain time--ninja outfit
+    private bool isInvisible = false;
 
     private bool canDestroyTruck = false; // player can destroy trucks--delinquent outfit
     [HideInInspector] public static float tractorSpeed;
@@ -55,8 +56,9 @@ public class PlayerController : MonoBehaviour {
     public AudioClip hitByTruckSound;
     public AudioClip collectCoinSound;
     public AudioClip truckDestroyed;
-
-
+    public AudioClip abilityReady;
+    public AudioClip abilityUsed;
+    private bool canPlayAudio;
 
     // Use this for initialization
     void Start ()
@@ -92,7 +94,7 @@ public class PlayerController : MonoBehaviour {
         {
             jumpTwoSpaces = true;
             fastMovement = invisibility = canDestroyTruck = endurance = timeFreeze = destroyAllTrucks = false;
-            speed = 2.5f;
+            speed = 2.0f;
             jumpForce = 10.0f;
             distanceToMove = 2.0f;            
         }
@@ -108,8 +110,13 @@ public class PlayerController : MonoBehaviour {
         
         if (Input.GetKeyDown("3"))
         {
+            invisibility = true;
             jumpTwoSpaces = fastMovement = canDestroyTruck = endurance = timeFreeze = destroyAllTrucks = false;
-            if (counter <= 0) StartCoroutine(MakeInvisible(10.0f));            
+            if (counter <= 0)
+            {
+                audio.PlayOneShot(abilityUsed, 1.0f);
+                StartCoroutine(MakeInvisible(10.0f));
+            }
         }
 
         if (Input.GetKeyDown("4"))
@@ -129,15 +136,22 @@ public class PlayerController : MonoBehaviour {
         {
             timeFreeze = true;
             jumpTwoSpaces = fastMovement = invisibility = canDestroyTruck = endurance = destroyAllTrucks = false;
-            if (counter <= 0) affectTruckTemporarily();            
+            if (counter <= 0)
+            {
+                audio.PlayOneShot(abilityUsed, 1.0f);
+                affectTruckTemporarily();
+            }
         }
         
         if (Input.GetKeyDown("7"))
         {
             destroyAllTrucks = true;
             jumpTwoSpaces = fastMovement = invisibility = canDestroyTruck = endurance = timeFreeze = false;
-            if (counter <= 0) affectTruckTemporarily();
-            //tractorSpeed += 0.2f;            
+            if (counter <= 0)
+            {
+                audio.PlayOneShot(abilityUsed, 1.0f);
+                affectTruckTemporarily();
+            } 
         }
         
         ////////////////    Debug end      /////////////////////
@@ -168,6 +182,11 @@ public class PlayerController : MonoBehaviour {
 
         float step = speed * Time.deltaTime;
         transform.position = Vector3.MoveTowards(transform.position, destination, step);
+        if (counter <= 0  && (invisibility || timeFreeze || destroyAllTrucks) && canPlayAudio)
+        {
+            audio.PlayOneShot(abilityReady, 3.0f);
+            canPlayAudio = false;
+        }
     }
 
     void FixedUpdate()
@@ -185,7 +204,7 @@ public class PlayerController : MonoBehaviour {
     /*
     void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("Truck") && !invisibility)
+        if (other.gameObject.CompareTag("Truck") && !isInvisible)
         {
             if (endurance)
             {
@@ -222,21 +241,24 @@ public class PlayerController : MonoBehaviour {
 
     public void Die(Vector3 truckVelocity, Collider other)
     {
-        if (endurance)
+        if (!isInvisible)
         {
-            audio.PlayOneShot(truckDestroyed, 1.0f);
-            Destroy(other.gameObject);
-            if (HP > 0) HP--;
-            else endurance = false;
-            return;
+            if (endurance)
+            {
+                audio.PlayOneShot(truckDestroyed, 1.0f);
+                Destroy(other.gameObject);
+                if (HP > 0) HP--;
+                else endurance = false;
+                return;
+            }
+            //Time.timeScale = 1.0f;
+            audio.PlayOneShot(hitByTruckSound, 1.0f);
+            StartCoroutine(DelayTime(0.3f));
+            Time.timeScale = 0.2f;
+            rb.AddForce(/*other.gameObject.GetComponent<Rigidbody>().velocity*/ truckVelocity * 20.0f, ForceMode.Impulse);
+            rb.AddForce(new Vector3(0f, 10f, 0f), ForceMode.Impulse);
+            //SceneManager.LoadScene("Score", LoadSceneMode.Single);
         }
-        //Time.timeScale = 1.0f;
-        audio.PlayOneShot(hitByTruckSound, 1.0f);
-        StartCoroutine(DelayTime(0.3f));
-        Time.timeScale = 0.2f;
-        rb.AddForce(/*other.gameObject.GetComponent<Rigidbody>().velocity*/ truckVelocity * 20.0f, ForceMode.Impulse);
-        rb.AddForce(new Vector3(0f, 10f, 0f), ForceMode.Impulse);
-        //SceneManager.LoadScene("Score", LoadSceneMode.Single);
     }
 
     public void AddScore()
@@ -273,18 +295,21 @@ public class PlayerController : MonoBehaviour {
     
     IEnumerator MakeInvisible(float duration)
     {
-        invisibility = true;
+        isInvisible = true;
         gameObject.GetComponent<MeshRenderer>().enabled = false;
         yield return new WaitForSeconds(duration);
-        invisibility = false;
+        isInvisible = false;
         gameObject.GetComponent<MeshRenderer>().enabled = true;
         counter = 10;
+        canPlayAudio = true;
     }
 
     private void affectTruckTemporarily()
     {
         GameObject[] allTrucks;
         allTrucks = GameObject.FindGameObjectsWithTag("Truck");
+        GameObject[] allTruckSpawns;
+        allTruckSpawns = GameObject.FindGameObjectsWithTag("TruckSpawn");
         if (destroyAllTrucks)
         {
             for (int i = 0; i < allTrucks.Length; i++)
@@ -302,7 +327,12 @@ public class PlayerController : MonoBehaviour {
             {
                 allTrucks[i].SendMessage("StopTruckTemporarily", 10.0f);
             }
+            for (int i = 0; i < allTruckSpawns.Length; i++)
+            {
+                allTruckSpawns[i].SendMessage("StopSpawnTemporarily", 10.0f);
+            }
             counter = 20;
         }
+        canPlayAudio = true;
     }
 }

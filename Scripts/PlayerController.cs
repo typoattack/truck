@@ -92,7 +92,7 @@ public class PlayerController : MonoBehaviour {
         {
             jumpTwoSpaces = true;
             fastMovement = invisibility = canDestroyTruck = endurance = timeFreeze = destroyAllTrucks = false;
-            speed = 2.5f;
+            speed = 2.0f;
             jumpForce = 10.0f;
             distanceToMove = 2.0f;            
         }
@@ -222,21 +222,24 @@ public class PlayerController : MonoBehaviour {
 
     public void Die(Vector3 truckVelocity, Collider other)
     {
-        if (endurance)
+        if (!invisibility)
         {
-            audio.PlayOneShot(truckDestroyed, 1.0f);
-            Destroy(other.gameObject);
-            if (HP > 0) HP--;
-            else endurance = false;
-            return;
+            if (endurance)
+            {
+                audio.PlayOneShot(truckDestroyed, 1.0f);
+                Destroy(other.gameObject);
+                if (HP > 0) HP--;
+                else endurance = false;
+                return;
+            }
+            //Time.timeScale = 1.0f;
+            audio.PlayOneShot(hitByTruckSound, 1.0f);
+            StartCoroutine(DelayTime(0.3f));
+            Time.timeScale = 0.2f;
+            rb.AddForce(/*other.gameObject.GetComponent<Rigidbody>().velocity*/ truckVelocity * 20.0f, ForceMode.Impulse);
+            rb.AddForce(new Vector3(0f, 10f, 0f), ForceMode.Impulse);
+            //SceneManager.LoadScene("Score", LoadSceneMode.Single);
         }
-        //Time.timeScale = 1.0f;
-        audio.PlayOneShot(hitByTruckSound, 1.0f);
-        StartCoroutine(DelayTime(0.3f));
-        Time.timeScale = 0.2f;
-        rb.AddForce(/*other.gameObject.GetComponent<Rigidbody>().velocity*/ truckVelocity * 20.0f, ForceMode.Impulse);
-        rb.AddForce(new Vector3(0f, 10f, 0f), ForceMode.Impulse);
-        //SceneManager.LoadScene("Score", LoadSceneMode.Single);
     }
 
     public void AddScore()
@@ -285,6 +288,8 @@ public class PlayerController : MonoBehaviour {
     {
         GameObject[] allTrucks;
         allTrucks = GameObject.FindGameObjectsWithTag("Truck");
+        GameObject[] allTruckSpawns;
+        allTruckSpawns = GameObject.FindGameObjectsWithTag("TruckSpawn");
         if (destroyAllTrucks)
         {
             for (int i = 0; i < allTrucks.Length; i++)
@@ -301,6 +306,10 @@ public class PlayerController : MonoBehaviour {
             for (int i = 0; i < allTrucks.Length; i++)
             {
                 allTrucks[i].SendMessage("StopTruckTemporarily", 10.0f);
+            }
+            for (int i = 0; i < allTruckSpawns.Length; i++)
+            {
+                allTruckSpawns[i].SendMessage("StopSpawnTemporarily", 10.0f);
             }
             counter = 20;
         }

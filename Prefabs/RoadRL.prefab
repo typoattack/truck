@@ -92,7 +92,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4389608034687778}
   - component: {fileID: 65932809670711978}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: ScoreTrigger
   m_TagString: Score
   m_Icon: {fileID: 0}
@@ -112,7 +112,7 @@ GameObject:
   - component: {fileID: 23323239546433372}
   - component: {fileID: 54497218244083538}
   - component: {fileID: 114628902252298300}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Truck
   m_TagString: Truck
   m_Icon: {fileID: 0}
@@ -132,7 +132,7 @@ GameObject:
   - component: {fileID: 23186785630124992}
   - component: {fileID: 54906630094777118}
   - component: {fileID: 114910904378961090}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Coin
   m_TagString: Coin
   m_Icon: {fileID: 0}

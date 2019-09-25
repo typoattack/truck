@@ -116,7 +116,6 @@ public class PlayerController : MonoBehaviour {
         {
             canDestroyTruck = true;
             jumpTwoSpaces = fastMovement = invisibility = endurance = timeFreeze = destroyAllTrucks = false;
-            tractorSpeed += 0.2f;            
         }
 
         if (Input.GetKeyDown("5") && canActivateEndurance)
@@ -183,7 +182,7 @@ public class PlayerController : MonoBehaviour {
 
         if (forwardMotion) forwardMotion = false;
     }
-
+    /*
     void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("Truck") && !invisibility)
@@ -217,6 +216,50 @@ public class PlayerController : MonoBehaviour {
 			coins++;
 			PlayerPrefs.SetInt ("TotalCoins", coins);
             Destroy(other.gameObject);
+        }
+    }
+    */
+
+    public void Die(Vector3 truckVelocity, Collider other)
+    {
+        if (endurance)
+        {
+            audio.PlayOneShot(truckDestroyed, 1.0f);
+            Destroy(other.gameObject);
+            if (HP > 0) HP--;
+            else endurance = false;
+            return;
+        }
+        //Time.timeScale = 1.0f;
+        audio.PlayOneShot(hitByTruckSound, 1.0f);
+        StartCoroutine(DelayTime(0.3f));
+        Time.timeScale = 0.2f;
+        rb.AddForce(/*other.gameObject.GetComponent<Rigidbody>().velocity*/ truckVelocity * 20.0f, ForceMode.Impulse);
+        rb.AddForce(new Vector3(0f, 10f, 0f), ForceMode.Impulse);
+        //SceneManager.LoadScene("Score", LoadSceneMode.Single);
+    }
+
+    public void AddScore()
+    {
+        score++;
+        if (counter > 0) counter--;
+    }
+
+    public void AddCoin(Collider other)
+    {
+        audio.PlayOneShot(collectCoinSound, 1.0f);
+        coins++;
+        PlayerPrefs.SetInt("TotalCoins", coins);
+        Destroy(other.gameObject);
+    }
+
+    public void Punch(Collider other)
+    {
+        if (canDestroyTruck && Input.GetKeyDown("p"))
+        {
+            Destroy(other.gameObject);
+            audio.PlayOneShot(truckDestroyed, 1.0f);
+            tractorSpeed += 0.2f;
         }
     }
 

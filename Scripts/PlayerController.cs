@@ -30,24 +30,25 @@ public class PlayerController : MonoBehaviour {
     [HideInInspector] public static float distanceToMove;
 
     //Abilities and powerups
-    private bool jumpTwoSpaces = false; // jump forward two spaces--cheerleader or Mario outfit
+    public bool jumpTwoSpaces = false; // jump forward two spaces--cheerleader or Mario outfit
 
-    private bool fastMovement = false; // faster movement--track and field outfit
+    public bool fastMovement = false; // faster movement--track and field outfit
 
-    private bool invisibility = false; // player disappears, cannot be hit by trucks for certain time--ninja outfit
+    public bool invisibility = false; // player disappears, cannot be hit by trucks for certain time--ninja outfit
+    private bool isInvisible = false;
 
-    private bool canDestroyTruck = false; // player can destroy trucks--delinquent outfit
+    public bool canDestroyTruck = false; // player can destroy trucks--delinquent outfit
     [HideInInspector] public static float tractorSpeed;
 
-    private bool endurance = false; // player can take one truck hit--zombie outfit
+    public bool endurance = false; // player can take one truck hit--zombie outfit
     private bool canActivateEndurance = true;
     private int HP;
 
-    private bool timeFreeze = false; // player can stop all trucks for certain time--Jojos tribute outfit
+    public bool timeFreeze = false; // player can stop all trucks for certain time--Jojos tribute outfit
 
-    private bool destroyAllTrucks = false; // player can destroy all trucks on screen--magical girl outfit
+    public bool destroyAllTrucks = false; // player can destroy all trucks on screen--magical girl outfit
 
-    private int counter;
+    public int counter;
 
     //Audio
     private AudioSource audio;
@@ -55,8 +56,9 @@ public class PlayerController : MonoBehaviour {
     public AudioClip hitByTruckSound;
     public AudioClip collectCoinSound;
     public AudioClip truckDestroyed;
-
-
+    public AudioClip abilityReady;
+    public AudioClip abilityUsed;
+    private bool canPlayAudio;
 
     // Use this for initialization
     void Start ()
@@ -108,8 +110,13 @@ public class PlayerController : MonoBehaviour {
         
         if (Input.GetKeyDown("3"))
         {
+            invisibility = true;
             jumpTwoSpaces = fastMovement = canDestroyTruck = endurance = timeFreeze = destroyAllTrucks = false;
-            if (counter <= 0) StartCoroutine(MakeInvisible(10.0f));            
+            if (counter <= 0)
+            {
+                audio.PlayOneShot(abilityUsed, 1.0f);
+                StartCoroutine(MakeInvisible(10.0f));
+            }
         }
 
         if (Input.GetKeyDown("4"))
@@ -129,15 +136,23 @@ public class PlayerController : MonoBehaviour {
         {
             timeFreeze = true;
             jumpTwoSpaces = fastMovement = invisibility = canDestroyTruck = endurance = destroyAllTrucks = false;
-            if (counter <= 0) affectTruckTemporarily();            
+            if (counter <= 0)
+            {
+                audio.PlayOneShot(abilityUsed, 1.0f);
+                affectTruckTemporarily();
+            }
         }
         
         if (Input.GetKeyDown("7"))
         {
             destroyAllTrucks = true;
             jumpTwoSpaces = fastMovement = invisibility = canDestroyTruck = endurance = timeFreeze = false;
-            if (counter <= 0) affectTruckTemporarily();
-            //tractorSpeed += 0.2f;            
+            if (counter <= 0)
+            {
+                Debug.Log("activate");
+                audio.PlayOneShot(abilityUsed, 1.0f);
+                affectTruckTemporarily();
+            } 
         }
         
         ////////////////    Debug end      /////////////////////
@@ -168,6 +183,11 @@ public class PlayerController : MonoBehaviour {
 
         float step = speed * Time.deltaTime;
         transform.position = Vector3.MoveTowards(transform.position, destination, step);
+        if (counter <= 0  && (invisibility || timeFreeze || destroyAllTrucks) && canPlayAudio)
+        {
+            audio.PlayOneShot(abilityReady, 3.0f);
+            canPlayAudio = false;
+        }
     }
 
     void FixedUpdate()
@@ -185,7 +205,7 @@ public class PlayerController : MonoBehaviour {
     /*
     void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("Truck") && !invisibility)
+        if (other.gameObject.CompareTag("Truck") && !isInvisible)
         {
             if (endurance)
             {
@@ -222,7 +242,7 @@ public class PlayerController : MonoBehaviour {
 
     public void Die(Vector3 truckVelocity, Collider other)
     {
-        if (!invisibility)
+        if (!isInvisible)
         {
             if (endurance)
             {
@@ -276,12 +296,13 @@ public class PlayerController : MonoBehaviour {
     
     IEnumerator MakeInvisible(float duration)
     {
-        invisibility = true;
+        isInvisible = true;
         gameObject.GetComponent<MeshRenderer>().enabled = false;
         yield return new WaitForSeconds(duration);
-        invisibility = false;
+        isInvisible = false;
         gameObject.GetComponent<MeshRenderer>().enabled = true;
         counter = 10;
+        canPlayAudio = true;
     }
 
     private void affectTruckTemporarily()
@@ -313,5 +334,6 @@ public class PlayerController : MonoBehaviour {
             }
             counter = 20;
         }
+        canPlayAudio = true;
     }
 }

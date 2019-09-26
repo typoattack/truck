@@ -149,7 +149,6 @@ public class PlayerController : MonoBehaviour {
             jumpTwoSpaces = fastMovement = invisibility = canDestroyTruck = endurance = timeFreeze = false;
             if (counter <= 0)
             {
-                Debug.Log("activate");
                 audio.PlayOneShot(abilityUsed, 1.0f);
                 affectTruckTemporarily();
             } 

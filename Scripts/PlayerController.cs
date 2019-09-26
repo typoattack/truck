@@ -30,25 +30,25 @@ public class PlayerController : MonoBehaviour {
     [HideInInspector] public static float distanceToMove;
 
     //Abilities and powerups
-    private bool jumpTwoSpaces = false; // jump forward two spaces--cheerleader or Mario outfit
+    public bool jumpTwoSpaces = false; // jump forward two spaces--cheerleader or Mario outfit
 
-    private bool fastMovement = false; // faster movement--track and field outfit
+    public bool fastMovement = false; // faster movement--track and field outfit
 
-    private bool invisibility = false; // player disappears, cannot be hit by trucks for certain time--ninja outfit
+    public bool invisibility = false; // player disappears, cannot be hit by trucks for certain time--ninja outfit
     private bool isInvisible = false;
 
-    private bool canDestroyTruck = false; // player can destroy trucks--delinquent outfit
+    public bool canDestroyTruck = false; // player can destroy trucks--delinquent outfit
     [HideInInspector] public static float tractorSpeed;
 
-    private bool endurance = false; // player can take one truck hit--zombie outfit
+    public bool endurance = false; // player can take one truck hit--zombie outfit
     private bool canActivateEndurance = true;
     private int HP;
 
-    private bool timeFreeze = false; // player can stop all trucks for certain time--Jojos tribute outfit
+    public bool timeFreeze = false; // player can stop all trucks for certain time--Jojos tribute outfit
 
-    private bool destroyAllTrucks = false; // player can destroy all trucks on screen--magical girl outfit
+    public bool destroyAllTrucks = false; // player can destroy all trucks on screen--magical girl outfit
 
-    private int counter;
+    public int counter;
 
     //Audio
     private AudioSource audio;

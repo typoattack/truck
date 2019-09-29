@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class PlayerBodyCollider : MonoBehaviour {
 
@@ -9,11 +7,6 @@ public class PlayerBodyCollider : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         parent = transform.GetComponentInParent<PlayerController>();
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
 	}
 
     void OnTriggerEnter(Collider other)

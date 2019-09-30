@@ -1,12 +1,10 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class CoinController : MonoBehaviour
 {
 
-    private Rigidbody rb;
     public float speed = 1.0f;
+    private Rigidbody rb;
 
     // Use this for initialization
     void Start()

@@ -40,7 +40,7 @@ public class RoadController : MonoBehaviour
 
         if (transform.position.z <= -2.5f)
         {
-            roadSpawn.gameObject.SendMessage("SpawnGround", 35);
+            roadSpawn.gameObject.SendMessage("SpawnGround", 20);
             Destroy(gameObject);
         }
 

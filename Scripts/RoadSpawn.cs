@@ -20,7 +20,7 @@ public class RoadSpawn : MonoBehaviour {
 
         SpawnGround(0);
         
-		for (int i = -2; i <= 20; i++)
+		for (int i = -2; i <= 35; i++)
         {
             if (i== 0) continue;
             SpawnGround(i);

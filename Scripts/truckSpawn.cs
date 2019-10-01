@@ -1,21 +1,21 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class truckSpawn : MonoBehaviour {
 
     public TruckController truck;
     public CoinController coin;
-    public bool canSpawn = false;
+    bool canSpawn = false;
     private float waitTime;
     private float timer = 0.0f;
     private int decider;
     private float truckSpeed;
     bool wasLastObjectCoin = false;
-    public bool isParentGround = false;
+    bool isParentGround = false;
     bool canTractorSpawn = true;
 	private float minTruckSpeed;
     private float tractorSpeed;
+    PlayerController mc;
 
     // Use this for initialization
     void Start ()
@@ -23,13 +23,13 @@ public class truckSpawn : MonoBehaviour {
 		waitTime = Random.Range(2.0f, 5.0f);
 		minTruckSpeed = Random.Range(.25f, .5f);
 		truckSpeed = Random.Range(minTruckSpeed, minTruckSpeed*2);
-        tractorSpeed = PlayerController.tractorSpeed;
+        mc = GameObject.Find("MC").GetComponent<PlayerController>();
+        tractorSpeed = mc.tractorSpeed;
         decider = Random.Range(0, 10);
         if (transform.parent.CompareTag("Ground")) isParentGround = true;
         else if (decider >= 7)
         {
             SpawnCoin();
-            canSpawn = false;
         }
         else SpawnTruck();
     }
@@ -37,7 +37,7 @@ public class truckSpawn : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
-        tractorSpeed = PlayerController.tractorSpeed;
+        tractorSpeed = mc.tractorSpeed;
         timer += Time.deltaTime;
         if(isParentGround == false) // road spawns trucks
         {

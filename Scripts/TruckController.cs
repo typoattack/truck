@@ -1,39 +1,39 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
-public class TruckController : MonoBehaviour
-{
+public class TruckController : MonoBehaviour {
 
-    public float speed = 1.0f;
     private Rigidbody rb;
-    private Vector3 direction;
+    public float speed = 1.0f;
+	private Vector3 direction;
 
     // Use this for initialization
-    void Start()
+    void Start ()
     {
         rb = GetComponent<Rigidbody>();
-        direction = transform.right;
+		direction = transform.right;
         rb.velocity = transform.right * speed;
     }
-
-    // Update is called once per frame
-    void Update()
+	
+	// Update is called once per frame
+	void Update ()
     {
         if (transform.position.z <= -2.0f) Destroy(gameObject);
-    }
+	}
 
-    void OnTriggerStay(Collider other)
-    {
+	void OnTriggerStay(Collider other)
+	{
         if (other.gameObject.CompareTag("crumpleZone"))
         {
-            speed = other.transform.parent.gameObject.GetComponent<Rigidbody>().velocity.magnitude;
-            rb.velocity = direction * speed;
-        }
-    }
+            speed = other.transform.parent.gameObject.GetComponent<Rigidbody> ().velocity.magnitude;
+			rb.velocity = direction * speed;
+		} 
+	}
 
     IEnumerator StopTruckTemporarily(float duration)
     {
-        rb.velocity = Vector3.zero;
+        rb.velocity = transform.right * 0f;
         yield return new WaitForSeconds(duration);
         rb.velocity = transform.right * speed;
 

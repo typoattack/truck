@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 
 public class RoadSpawn : MonoBehaviour {
 
@@ -8,6 +10,7 @@ public class RoadSpawn : MonoBehaviour {
     private int groundDecider;
     private int rotationDecider;
     private int roadCount = 10;
+    private bool isPlayerGrounded;
     int spawnMode = 0; // 0 for random, 1 for 2+2 highways, 2 for 3+3 highways
     int highwayCounter = 0;
 
@@ -24,6 +27,10 @@ public class RoadSpawn : MonoBehaviour {
         }
         
 	}
+	
+	// Update is called once per frame
+	void Update () {
+    }
     
     void SpawnGround(int i)
     {

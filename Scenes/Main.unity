@@ -511,14 +511,10 @@ MonoBehaviour:
   Ground:
     serializedVersion: 2
     m_Bits: 256
-  forwardMotion: 0
-  speed: 0
-  distanceToMove: 0
   jumpTwoSpaces: 0
   fastMovement: 0
   invisibility: 0
   canDestroyTruck: 0
-  tractorSpeed: 0
   endurance: 0
   timeFreeze: 0
   destroyAllTrucks: 0
@@ -596,7 +592,7 @@ AudioSource:
       tangentMode: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
-    m_RotationOrder: 0
+    m_RotationOrder: 4
   reverbZoneMixCustomCurve:
     serializedVersion: 2
     m_Curve:

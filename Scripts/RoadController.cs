@@ -1,40 +1,41 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 
-public class RoadController : MonoBehaviour
-{
-    Transform roadSpawn;
+public class RoadController : MonoBehaviour {
+
+    private Rigidbody rb;
+    public Transform roadSpawn;
     private float speed;
 
     private bool isPlayerMovingForward;
     private Vector3 destination;
     private float distanceToMove;
-    PlayerController mc;
 
     // Use this for initialization
     void Start()
     {
         roadSpawn = GameObject.Find("roadSpawn").transform;
 
+        isPlayerMovingForward = PlayerController.forwardMotion;
         destination = transform.position;
-        mc = GameObject.Find("MC").GetComponent<PlayerController>();
-        isPlayerMovingForward = mc.forwardMotion;
-        speed = mc.speed;
-        distanceToMove = mc.distanceToMove;
+        speed = PlayerController.speed;
+        distanceToMove = PlayerController.distanceToMove;
     }
-
-    // Update is called once per frame
-    void Update()
+	
+	// Update is called once per frame
+	void Update ()
     {
 
-        isPlayerMovingForward = mc.forwardMotion;
-        speed = mc.speed;
-        distanceToMove = mc.distanceToMove;
+        isPlayerMovingForward = PlayerController.forwardMotion;
+        speed = PlayerController.speed;
+        distanceToMove = PlayerController.distanceToMove;
 
         if (isPlayerMovingForward)
         {
             destination = new Vector3(transform.position.x, transform.position.y, transform.position.z - distanceToMove);
         }
-
+        
         float step = speed * Time.deltaTime;
         transform.position = Vector3.MoveTowards(transform.position, destination, step);
 
@@ -43,7 +44,7 @@ public class RoadController : MonoBehaviour
             roadSpawn.gameObject.SendMessage("SpawnGround", 20);
             Destroy(gameObject);
         }
-
+        
     }
-
+    
 }

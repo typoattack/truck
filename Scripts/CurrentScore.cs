@@ -1,5 +1,8 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class CurrentScore : MonoBehaviour {
 
@@ -10,7 +13,7 @@ public class CurrentScore : MonoBehaviour {
         SetScoreText();
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         SetScoreText();
     }

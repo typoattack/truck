@@ -8,6 +8,8 @@ public class RoadController : MonoBehaviour
     private bool isPlayerMovingForward;
     private Vector3 destination;
     private float distanceToMove;
+    public bool doubleJump;
+    public int startingZPosition;
     PlayerController mc;
 
     // Use this for initialization
@@ -20,6 +22,8 @@ public class RoadController : MonoBehaviour
         isPlayerMovingForward = mc.forwardMotion;
         speed = mc.speed;
         distanceToMove = mc.distanceToMove;
+        doubleJump = mc.jumpTwoSpaces;
+        startingZPosition = (int) transform.position.z;
     }
 
     // Update is called once per frame
@@ -29,6 +33,7 @@ public class RoadController : MonoBehaviour
         isPlayerMovingForward = mc.forwardMotion;
         speed = mc.speed;
         distanceToMove = mc.distanceToMove;
+        doubleJump = mc.jumpTwoSpaces;
 
         if (isPlayerMovingForward)
         {
@@ -40,7 +45,15 @@ public class RoadController : MonoBehaviour
 
         if (transform.position.z <= -2.5f)
         {
-            roadSpawn.gameObject.SendMessage("SpawnGround", 20);
+            if (doubleJump)
+            {
+                if (startingZPosition % 2 == 0)
+                {
+                    roadSpawn.gameObject.SendMessage("SpawnGround", 19);
+                    roadSpawn.gameObject.SendMessage("SpawnGround", 20);
+                }
+            }
+            else roadSpawn.gameObject.SendMessage("SpawnGround", 20);
             Destroy(gameObject);
         }
 

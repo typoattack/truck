@@ -2,7 +2,7 @@
 
 public class RoadController : MonoBehaviour
 {
-    Transform roadSpawn;
+    RoadSpawn roadSpawn;
     private float speed;
 
     private bool isPlayerMovingForward;
@@ -10,12 +10,13 @@ public class RoadController : MonoBehaviour
     private float distanceToMove;
     public bool doubleJump;
     public int startingZPosition;
+    private int lastRoadPosition;
     PlayerController mc;
 
     // Use this for initialization
     void Start()
     {
-        roadSpawn = GameObject.Find("roadSpawn").transform;
+        roadSpawn = GameObject.Find("roadSpawn").GetComponent<RoadSpawn>();
 
         destination = transform.position;
         mc = GameObject.Find("MC").GetComponent<PlayerController>();
@@ -24,6 +25,7 @@ public class RoadController : MonoBehaviour
         distanceToMove = mc.distanceToMove;
         doubleJump = mc.jumpTwoSpaces;
         startingZPosition = (int) transform.position.z;
+        lastRoadPosition = roadSpawn.lastRoad;
     }
 
     // Update is called once per frame
@@ -49,11 +51,11 @@ public class RoadController : MonoBehaviour
             {
                 if (startingZPosition % 2 == 0)
                 {
-                    roadSpawn.gameObject.SendMessage("SpawnGround", 19);
-                    roadSpawn.gameObject.SendMessage("SpawnGround", 20);
+                    roadSpawn.gameObject.SendMessage("SpawnGround", lastRoadPosition - 1);
+                    roadSpawn.gameObject.SendMessage("SpawnGround", lastRoadPosition);
                 }
             }
-            else roadSpawn.gameObject.SendMessage("SpawnGround", 20);
+            else roadSpawn.gameObject.SendMessage("SpawnGround", lastRoadPosition);
             Destroy(gameObject);
         }
 

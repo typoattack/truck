@@ -8,6 +8,7 @@ public class RoadSpawn : MonoBehaviour {
     private int groundDecider;
     private int rotationDecider;
     private int roadCount = 10;
+    public int lastRoad = 20;
     int spawnMode = 0; // 0 for random, 1 for 2+2 highways, 2 for 3+3 highways
     int highwayCounter = 0;
 

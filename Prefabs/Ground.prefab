@@ -396,6 +396,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03382a46f15c7f64ea90f6ff7e0cd12f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  doubleJump: 0
+  startingZPosition: 0
 --- !u!114 &114208697502274416
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -421,6 +423,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   truck: {fileID: 114307174873417314, guid: 64543c16c39f06a429407df9e3bbf107, type: 2}
   coin: {fileID: 0}
+  canSpawn: 0
 --- !u!114 &114730950538243362
 MonoBehaviour:
   m_ObjectHideFlags: 1

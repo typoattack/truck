@@ -44,6 +44,8 @@ public class PlayerController : MonoBehaviour
 
     public int counter;
 
+    private bool canPause;
+
     //Audio
     private AudioSource audio;
     public AudioClip jumpSound;
@@ -68,6 +70,7 @@ public class PlayerController : MonoBehaviour
             coins = PlayerPrefs.GetInt("TotalCoins");
         }
         Time.timeScale = 5.0f;
+        canPause = true;
 
         groundedDistance = 0.5f;
         speed = 2.5f;
@@ -132,22 +135,25 @@ public class PlayerController : MonoBehaviour
         if (transform.position.x >= 0.5f) canMoveRight = false;
         else canMoveRight = true;
 
-        if (Input.GetKeyDown("w") && isGrounded)
+        if (Input.GetKeyDown("w"))
         {
-            jump = true;
-            forwardMotion = true;
+            //jump = true;
+            //forwardMotion = true;
+            jumpForward();
         }
 
-        if (Input.GetKeyDown("a") && canMoveLeft && isGrounded)
+        if (Input.GetKeyDown("a"))
         {
-            jump = true;
-            destination = new Vector3(transform.position.x - 1.0f, transform.position.y, transform.position.z);
+            //jump = true;
+            //destination = new Vector3(transform.position.x - 1.0f, transform.position.y, transform.position.z);
+            jumpLeft();
         }
 
-        if (Input.GetKeyDown("d") && canMoveRight && isGrounded)
+        if (Input.GetKeyDown("d"))
         {
-            jump = true;
-            destination = new Vector3(transform.position.x + 1.0f, transform.position.y, transform.position.z);
+            //jump = true;
+            //destination = new Vector3(transform.position.x + 1.0f, transform.position.y, transform.position.z);
+            jumpRight();
         }
 
         float step = speed * Time.deltaTime;
@@ -172,43 +178,58 @@ public class PlayerController : MonoBehaviour
 
         if (forwardMotion) forwardMotion = false;
     }
-    /*
-    void OnTriggerEnter(Collider other)
+   
+    public void jumpForward()
     {
-        if (other.gameObject.CompareTag("Truck") && !isInvisible)
+        if (isGrounded)
         {
-            if (endurance)
-            {
-                audio.PlayOneShot(truckDestroyed, 1.0f);
-                Destroy(other.gameObject);
-                if (HP > 0) HP--;
-                else endurance = false;
-                return;
-            }
-            //Time.timeScale = 1.0f;
-            audio.PlayOneShot(hitByTruckSound, 1.0f);
-            StartCoroutine(DelayTime(0.3f));
-            Time.timeScale = 0.2f;
-            rb.AddForce(other.gameObject.GetComponent<Rigidbody>().velocity *20.0f, ForceMode.Impulse);
-            rb.AddForce(new Vector3(0f, 10f, 0f), ForceMode.Impulse);
-            //SceneManager.LoadScene("Score", LoadSceneMode.Single);
-        }
-
-        if(other.gameObject.CompareTag("Score"))
-        {
-            score++;
-            if (counter > 0) counter--;
-        }
-
-        if(other.gameObject.CompareTag("Coin"))
-        {
-            audio.PlayOneShot(collectCoinSound, 1.0f);
-			coins++;
-			PlayerPrefs.SetInt ("TotalCoins", coins);
-            Destroy(other.gameObject);
+            jump = true;
+            forwardMotion = true;
         }
     }
-    */
+
+    public void jumpRight()
+    {
+        if (canMoveRight && isGrounded)
+        {
+            jump = true;
+            destination = new Vector3(transform.position.x + 1.0f, transform.position.y, transform.position.z);
+        }
+    }
+
+    public void jumpLeft()
+    {
+        if (canMoveLeft && isGrounded)
+        {
+            jump = true;
+            destination = new Vector3(transform.position.x - 1.0f, transform.position.y, transform.position.z);
+        }
+    }
+
+    public void ActivatePowerup()
+    {
+        if (ability == 3)
+        {
+            if (counter <= 0)
+            {
+                audio.PlayOneShot(abilityUsed, 1.0f);
+                StartCoroutine(MakeInvisible(10.0f));
+            }
+        }
+        else if (ability == 6)
+        {
+            if (counter <= 0)
+            {
+                audio.PlayOneShot(abilityUsed, 1.0f);
+                affectTruckTemporarily();
+            }
+        }
+        else if (ability == 7 && counter <= 0)
+        {
+            audio.PlayOneShot(abilityUsed, 1.0f);
+            affectTruckTemporarily();
+        }
+    }
 
     public void Die(Vector3 truckVelocity, Collider other)
     {
@@ -223,6 +244,7 @@ public class PlayerController : MonoBehaviour
                 return;
             }
             //Time.timeScale = 1.0f;
+            canPause = false;
             audio.PlayOneShot(hitByTruckSound, 1.0f);
             StartCoroutine(DelayTime(0.3f));
             Time.timeScale = 0.2f;
@@ -244,6 +266,16 @@ public class PlayerController : MonoBehaviour
         coins++;
         PlayerPrefs.SetInt("TotalCoins", coins);
         Destroy(other.gameObject);
+    }
+
+    public void Pause()
+    {
+        if (canPause) Time.timeScale = 0f;
+    }
+
+    public void Unpause()
+    {
+        Time.timeScale = 5.0f;
     }
 
     public void Punch(Collider other)

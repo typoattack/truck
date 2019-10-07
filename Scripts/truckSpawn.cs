@@ -5,7 +5,7 @@ public class truckSpawn : MonoBehaviour {
 
     public TruckController truck;
     public CoinController coin;
-    bool canSpawn = false;
+    public bool canSpawn = false;
     private float waitTime;
     private float timer = 0.0f;
     private int decider;
@@ -90,9 +90,8 @@ public class truckSpawn : MonoBehaviour {
 
     IEnumerator StopSpawnTemporarily(float duration)
     {
-        bool oldSpawnFlag = canSpawn;
         canSpawn = false;
         yield return new WaitForSeconds(duration);
-        canSpawn = oldSpawnFlag;
+        canSpawn = true;
     }
 }

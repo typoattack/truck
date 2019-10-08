@@ -3787,12 +3787,12 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1217272633}
-        m_MethodName: Punch
-        m_Mode: 2
+      - m_Target: {fileID: 1568817421}
+        m_MethodName: ThrowPunch
+        m_Mode: 1
         m_Arguments:
-          m_ObjectArgument: {fileID: 1568817423}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Collider, UnityEngine
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 

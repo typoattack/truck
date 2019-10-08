@@ -295,7 +295,7 @@ public class PlayerController : MonoBehaviour
 
     public void Punch(Collider other)
     {
-        if (ability == 4 && Input.GetKeyDown("e"))
+        if (ability == 4)
         {
             Destroy(other.gameObject);
             audio.PlayOneShot(truckDestroyed, 1.0f);

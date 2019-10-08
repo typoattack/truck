@@ -44,8 +44,6 @@ public class PlayerController : MonoBehaviour
 
     public int counter;
 
-    private bool canPause;
-
     //Audio
     private AudioSource audio;
     public AudioClip jumpSound;
@@ -55,6 +53,11 @@ public class PlayerController : MonoBehaviour
     public AudioClip abilityReady;
     public AudioClip abilityUsed;
     private bool canPlayAudio;
+
+    //Other
+    private bool canPause;
+    public GameObject powerUpButton;
+    public GameObject punchButton;
 
     void Awake()
     {
@@ -93,6 +96,16 @@ public class PlayerController : MonoBehaviour
             speed = 5.0f;
             jumpForce = 3.5f;
             distanceToMove = 1.0f;
+        }
+
+        else if (counter <= 0 && (ability == 3 || ability == 6 || ability == 7))
+        {
+            powerUpButton.SetActive(true);
+        }
+
+        else if (ability == 4)
+        {
+            punchButton.SetActive(true);
         }
     }
 
@@ -162,6 +175,7 @@ public class PlayerController : MonoBehaviour
         {
             audio.PlayOneShot(abilityReady, 3.0f);
             canPlayAudio = false;
+            powerUpButton.SetActive(true);
         }
 
     }
@@ -229,6 +243,7 @@ public class PlayerController : MonoBehaviour
             audio.PlayOneShot(abilityUsed, 1.0f);
             affectTruckTemporarily();
         }
+        powerUpButton.SetActive(false);
     }
 
     public void Die(Vector3 truckVelocity, Collider other)

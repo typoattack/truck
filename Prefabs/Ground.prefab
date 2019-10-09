@@ -81,7 +81,7 @@ GameObject:
   - component: {fileID: 114208697502274416}
   m_Layer: 0
   m_Name: Tractor
-  m_TagString: Truck
+  m_TagString: Tractor
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -421,7 +421,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 806e204b8d2d30646a9e743daf30a16a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  truck: {fileID: 114307174873417314, guid: 64543c16c39f06a429407df9e3bbf107, type: 2}
+  truck: {fileID: 114208697502274416}
   coin: {fileID: 0}
   canSpawn: 0
 --- !u!114 &114730950538243362

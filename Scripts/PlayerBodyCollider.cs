@@ -11,7 +11,7 @@ public class PlayerBodyCollider : MonoBehaviour {
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("Truck"))
+        if (other.gameObject.CompareTag("Truck") || other.gameObject.CompareTag("Tractor"))
         {
             parent.Die(other.gameObject.GetComponent<Rigidbody>().velocity, other);
         }

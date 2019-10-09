@@ -19,9 +19,7 @@ public class ScoreText : MonoBehaviour {
 
     private void SetScoreText()
     {
-        scoreText.text = "You were isekai'd!\r\n" +
-                         "You scored " + PlayerController.score + " points\r\n" +
-                         "You collected " + PlayerController.coins + " coins\r\n" +
-                         "\r\n\r\nPress space to restart";
+        scoreText.text = "Score: " + PlayerController.score + "\r\n" +
+                         "Coins: " + PlayerController.coins + "\r\n";
     }
 }

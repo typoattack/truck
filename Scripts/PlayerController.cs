@@ -326,8 +326,13 @@ public class PlayerController : MonoBehaviour
     {
         GameObject[] allTrucks;
         allTrucks = GameObject.FindGameObjectsWithTag("Truck");
+
+        GameObject[] allTractors;
+        allTractors = GameObject.FindGameObjectsWithTag("Tractor");
+
         GameObject[] allTruckSpawns;
         allTruckSpawns = GameObject.FindGameObjectsWithTag("TruckSpawn");
+
         if (ability == 7)
         {
             for (int i = 0; i < allTrucks.Length; i++)
@@ -336,6 +341,14 @@ public class PlayerController : MonoBehaviour
                 float diffZ = allTrucks[i].transform.position.z - positionZ;
                 if (diffZ <= 10.0f) Destroy(allTrucks[i]);
             }
+
+            for (int i = 0; i < allTractors.Length; i++)
+            {
+                float positionZ = transform.position.z;
+                float diffZ = allTractors[i].transform.position.z - positionZ;
+                if (diffZ <= 10.0f) Destroy(allTractors[i]);
+            }
+
             for (int i = 0; i < allTruckSpawns.Length; i++)
             {
                 allTruckSpawns[i].SendMessage("StopSpawnTemporarily", 10.0f);
@@ -349,6 +362,12 @@ public class PlayerController : MonoBehaviour
             {
                 allTrucks[i].SendMessage("StopTruckTemporarily", 10.0f);
             }
+
+            for (int i = 0; i < allTractors.Length; i++)
+            {
+                allTractors[i].SendMessage("StopTruckTemporarily", 10.0f);
+            }
+
             for (int i = 0; i < allTruckSpawns.Length; i++)
             {
                 allTruckSpawns[i].SendMessage("StopSpawnTemporarily", 20.0f);

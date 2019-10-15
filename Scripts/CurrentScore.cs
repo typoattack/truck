@@ -17,6 +17,7 @@ public class CurrentScore : MonoBehaviour {
 
     private void SetScoreText()
     {
-        scoreText.text = "Score: " + PlayerController.score;
+        scoreText.text = "Score: " + PlayerController.score + "\r\n" +
+                         "Coins: " + PlayerController.coins;
     }
 }

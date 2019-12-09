@@ -27,6 +27,7 @@ public class PlayerController : MonoBehaviour
     private float jumpForce;
 
     //Abilities and powerups
+    public int gender; // male or female skin
     public int ability; // Public for debug purposes
     // 1: jump forward two spaces--cheerleader or Mario outfit
     // 2: faster movement--track and field outfit
@@ -84,6 +85,7 @@ public class PlayerController : MonoBehaviour
         HP = 2;
 
         ability = PlayerPrefs.GetInt("Ability");
+        gender = PlayerPrefs.GetInt("Gender");
         if (ability == 1)
         {
             speed = 2.0f;
@@ -106,6 +108,12 @@ public class PlayerController : MonoBehaviour
         else if (ability == 4)
         {
             punchButton.SetActive(true);
+        }
+
+        for (int i = 0; i <= 7; i++)
+        {
+            if (i == ability) gameObject.transform.GetChild(2).GetChild(gender).GetChild(i).gameObject.SetActive(true);
+            else gameObject.transform.GetChild(2).GetChild(gender).GetChild(i).gameObject.SetActive(false);
         }
     }
 

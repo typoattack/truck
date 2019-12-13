@@ -27,6 +27,7 @@ public class PlayerController : MonoBehaviour
     private float jumpForce;
 
     //Abilities and powerups
+    public int skin; // themed skin
     public int gender; // male or female skin
     public int ability; // Public for debug purposes
     // 1: jump forward two spaces--cheerleader or Mario outfit
@@ -36,6 +37,8 @@ public class PlayerController : MonoBehaviour
     // 5: player can take one truck hit--zombie outfit
     // 6: player can stop all trucks for certain time--Jojos tribute outfit
     // 7: player can destroy all trucks on screen--magical girl outfit
+
+    public int maxNumberOfSkins = 8;
 
     private bool isInvisible = false;
 
@@ -84,6 +87,7 @@ public class PlayerController : MonoBehaviour
         counter = 0;
         HP = 2;
 
+        skin = PlayerPrefs.GetInt("Skin");
         ability = PlayerPrefs.GetInt("Ability");
         gender = PlayerPrefs.GetInt("Gender");
         if (ability == 1)
@@ -110,7 +114,7 @@ public class PlayerController : MonoBehaviour
             punchButton.SetActive(true);
         }
 
-        for (int i = 0; i <= 7; i++)
+        for (int i = 0; i < maxNumberOfSkins; i++)
         {
             if (i == ability) gameObject.transform.GetChild(2).GetChild(gender).GetChild(i).gameObject.SetActive(true);
             else gameObject.transform.GetChild(2).GetChild(gender).GetChild(i).gameObject.SetActive(false);

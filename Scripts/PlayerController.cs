@@ -17,7 +17,7 @@ public class PlayerController : MonoBehaviour
     private float groundedDistance;
 
     //Score
-    [HideInInspector] public static int score = 0, coins = 0;
+    [HideInInspector] public static int score = 0, coins = 0, totalScore = 0;
 
     //Movement flags and variables
     [HideInInspector] public bool forwardMotion = false;
@@ -76,6 +76,14 @@ public class PlayerController : MonoBehaviour
         {
             coins = PlayerPrefs.GetInt("TotalCoins");
         }
+        if (!PlayerPrefs.HasKey("TotalScore"))
+        {
+            PlayerPrefs.SetInt("TotalScore", 0);
+        }
+        else
+        {
+            totalScore = PlayerPrefs.GetInt("TotalScore");
+        }
         Time.timeScale = 5.0f;
         canPause = true;
 
@@ -116,7 +124,7 @@ public class PlayerController : MonoBehaviour
 
         for (int i = 0; i < maxNumberOfSkins; i++)
         {
-            if (i == ability) gameObject.transform.GetChild(2).GetChild(gender).GetChild(i).gameObject.SetActive(true);
+            if (i == skin) gameObject.transform.GetChild(2).GetChild(gender).GetChild(i).gameObject.SetActive(true);
             else gameObject.transform.GetChild(2).GetChild(gender).GetChild(i).gameObject.SetActive(false);
         }
     }
@@ -125,7 +133,12 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         //////////////// For debug purpose /////////////////////
-        if (Input.GetKeyDown("r")) PlayerPrefs.SetInt("TotalCoins", 0);
+        if (Input.GetKeyDown("r"))
+        {
+            PlayerPrefs.SetInt("TotalCoins", 0);
+            PlayerPrefs.SetInt("TotalScore", 0);
+            score = coins = totalScore = 0;
+        }
 
         ////////////////    Debug end      /////////////////////
 
@@ -284,6 +297,8 @@ public class PlayerController : MonoBehaviour
     public void AddScore()
     {
         score++;
+        totalScore++;
+        PlayerPrefs.SetInt("TotalScore", totalScore);
         if (counter > 0) counter--;
     }
 

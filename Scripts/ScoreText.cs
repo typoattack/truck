@@ -19,7 +19,8 @@ public class ScoreText : MonoBehaviour {
 
     private void SetScoreText()
     {
-        scoreText.text = "Score: " + PlayerController.score + "\r\n" +
-                         "Coins: " + PlayerController.coins + "\r\n";
+        scoreText.text = "Round Score: " + PlayerController.score + "\r\n" +
+                         "Cumulative Score: " + PlayerController.totalScore + "\r\n" + 
+                         "Total Coins: " + PlayerController.coins + "\r\n";
     }
 }

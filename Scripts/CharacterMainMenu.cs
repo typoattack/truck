@@ -55,6 +55,11 @@ public class CharacterMainMenu : MonoBehaviour {
         if (ability < 0) ability = totalAbilities - 1;
     }
 
+    public void ConfirmAbility()
+    {
+        PlayerPrefs.SetInt("Ability", ability);
+    }
+
     public void AddToSkin()
     {
         skin++;
@@ -67,6 +72,12 @@ public class CharacterMainMenu : MonoBehaviour {
         if (skin < 0) skin = totalSkins - 1;
     }
 
+    public void ConfirmSkin()
+    {
+        PlayerPrefs.SetInt("Gender", gender);
+        PlayerPrefs.SetInt("Skin", skin);
+    }
+
     public void AddToGender()
     {
         gender++;
@@ -74,9 +85,9 @@ public class CharacterMainMenu : MonoBehaviour {
 
     public void ExitToMenu()
     {
-        PlayerPrefs.SetInt("Ability", ability);
-        PlayerPrefs.SetInt("Gender", gender);
-        PlayerPrefs.SetInt("Skin", skin);
+        //PlayerPrefs.SetInt("Ability", ability);
+        //PlayerPrefs.SetInt("Gender", gender);
+        //PlayerPrefs.SetInt("Skin", skin);
         SceneManager.LoadScene("Menu", LoadSceneMode.Single);
     }
 }

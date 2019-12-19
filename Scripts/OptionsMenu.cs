@@ -3,7 +3,10 @@ using UnityEngine.SceneManagement;
 
 public class OptionsMenu : MonoBehaviour {
 
-    private int[] abilityLocks = { 0, 0, 0, 0, 0, 0, 0, 0 };
+    private int[] abilitiesLocked = { 1, 0, 0, 0, 0, 0, 0, 0 };
+    private int[] abilitiesUnlocked = { 1, 1, 1, 1, 1, 1, 1, 1 };
+    private int[] skinsLocked = { 2, 0, 0, 0, 0, 0, 0, 0 };
+    private int[] skinsUnlocked = { 2, 1, 1, 1, 1, 1, 1, 1 };
 
     public void GoToCustomization()
     {
@@ -14,12 +17,18 @@ public class OptionsMenu : MonoBehaviour {
     {
         PlayerPrefs.SetInt("TotalCoins", 0);
         PlayerPrefs.SetInt("TotalScore", 0);
-        PlayerPrefsX.SetIntArray("AbilityLocks", abilityLocks);
+        PlayerPrefsX.SetIntArray("AbilityLocks", abilitiesLocked);
+        PlayerPrefsX.SetIntArray("SkinLocks", skinsLocked);
+        PlayerPrefs.SetInt("Ability", 0);
+        PlayerPrefs.SetInt("Gender", 0);
+        PlayerPrefs.SetInt("Skin", 0);
     }
 
     public void MaxAllValues()
     {
         PlayerPrefs.SetInt("TotalCoins", 99999);
         PlayerPrefs.SetInt("TotalScore", 99999);
+        PlayerPrefsX.SetIntArray("AbilityLocks", abilitiesUnlocked);
+        PlayerPrefsX.SetIntArray("SkinLocks", skinsUnlocked);
     }
 }

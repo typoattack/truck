@@ -6,7 +6,8 @@ public class CharacterMainMenu : MonoBehaviour {
     public int ability = 0, gender = 0, skin = 0;
     private int totalAbilities = 8, totalSkins = 8;
 
-    public int[] abilityLocks = { 0, 0, 0, 0, 0, 0, 0, 0 };
+    public int[] abilityLocks = { 1, 0, 0, 0, 0, 0, 0, 0 };
+    public int[] skinLocks = { 2, 0, 0, 0, 0, 0, 0, 0 };
 
     void Start()
     {
@@ -44,6 +45,14 @@ public class CharacterMainMenu : MonoBehaviour {
         else
         {
             abilityLocks = PlayerPrefsX.GetIntArray("AbilityLocks");
+        }
+        if (!PlayerPrefs.HasKey("SkinLocks"))
+        {
+            PlayerPrefsX.SetIntArray("SkinLocks", abilityLocks);
+        }
+        else
+        {
+            skinLocks = PlayerPrefsX.GetIntArray("SkinLocks");
         }
     }
 

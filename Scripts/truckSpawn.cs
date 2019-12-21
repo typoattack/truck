@@ -16,6 +16,7 @@ public class truckSpawn : MonoBehaviour {
 	private float minTruckSpeed;
     private float tractorSpeed;
     PlayerController mc;
+    private int coinXPosition = 0;
 
     // Use this for initialization
     void Start ()
@@ -81,10 +82,11 @@ public class truckSpawn : MonoBehaviour {
 
     void SpawnCoin()
     {
-        CoinController newCoin = Instantiate(coin, transform.position, transform.rotation) as CoinController;
+        Vector3 coinPosition = new Vector3(Random.Range(-3, 3), transform.position.y, transform.position.z);
+        CoinController newCoin = Instantiate(coin, coinPosition, transform.rotation) as CoinController;
         newCoin.gameObject.SetActive(true);
         newCoin.transform.parent = transform.parent;
-        newCoin.speed = truckSpeed;
+        newCoin.speed = 0f;
         wasLastObjectCoin = true;
     }
 

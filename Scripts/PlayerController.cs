@@ -168,9 +168,9 @@ public class PlayerController : MonoBehaviour
         }
 
         isGrounded = Physics.Raycast(transform.position, dir, groundedDistance, Ground);
-        if (transform.position.x <= -0.5f) canMoveLeft = false;
+        if (transform.position.x <= -2.5f) canMoveLeft = false;
         else canMoveLeft = true;
-        if (transform.position.x >= 0.5f) canMoveRight = false;
+        if (transform.position.x >= 2.5f) canMoveRight = false;
         else canMoveRight = true;
 
         if (Input.GetKeyDown("w"))

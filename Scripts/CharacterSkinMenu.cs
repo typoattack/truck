@@ -57,13 +57,7 @@ public class CharacterSkinMenu : MonoBehaviour
             gameObject.transform.GetChild(6).gameObject.SetActive(false);
             gameObject.transform.GetChild(4).gameObject.SetActive(true);
         }
-        else if (skinLocks[skin] == 1)
-        {
-            gameObject.transform.GetChild(5).gameObject.SetActive(false);
-            gameObject.transform.GetChild(6).gameObject.SetActive(true);
-            gameObject.transform.GetChild(4).gameObject.SetActive(false);
-        }
-        else if (skinLocks[skin] == 0 && coins >= skinUnlockThreshold[skin])
+        else if (coins >= skinUnlockThreshold[skin])
         {
             gameObject.transform.GetChild(5).gameObject.SetActive(false);
             skinLocks[skin] = 1;
@@ -73,6 +67,8 @@ public class CharacterSkinMenu : MonoBehaviour
         }
         else
         {
+            skinLocks[skin] = 0;
+            PlayerPrefsX.SetIntArray("SkinLocks", skinLocks);
             gameObject.transform.GetChild(4).gameObject.SetActive(false);
             gameObject.transform.GetChild(5).gameObject.SetActive(true);
             gameObject.transform.GetChild(6).gameObject.SetActive(false);

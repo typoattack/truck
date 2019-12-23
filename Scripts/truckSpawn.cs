@@ -10,7 +10,7 @@ public class truckSpawn : MonoBehaviour {
     private float timer = 0.0f;
     private int decider;
     private float truckSpeed;
-    bool wasLastObjectCoin = false;
+    //bool wasLastObjectCoin = false;
     bool isParentGround = false;
     bool canTractorSpawn = true;
 	private float minTruckSpeed;
@@ -45,7 +45,7 @@ public class truckSpawn : MonoBehaviour {
             if (timer > waitTime && canSpawn)
             {
                 decider = Random.Range(-7, 7);
-                if (decider <= -3 || wasLastObjectCoin)
+                if (decider <= -3) //|| wasLastObjectCoin)
 				{
 					truckSpeed = Random.Range(minTruckSpeed, minTruckSpeed*2);
                     SpawnTruck();
@@ -65,7 +65,7 @@ public class truckSpawn : MonoBehaviour {
     
     void OnTriggerExit(Collider other)
 	{
-        if (other.gameObject.CompareTag("crumpleZone") || other.gameObject.CompareTag("Coin"))
+        if (other.gameObject.CompareTag("crumpleZone")) //|| other.gameObject.CompareTag("Coin"))
         {
             canSpawn = true;
         }
@@ -77,7 +77,7 @@ public class truckSpawn : MonoBehaviour {
         newTruck.gameObject.SetActive(true);
         newTruck.transform.parent = transform.parent;
         newTruck.speed = truckSpeed;
-        wasLastObjectCoin = false;
+        //wasLastObjectCoin = false;
     }
 
     void SpawnCoin()
@@ -87,7 +87,7 @@ public class truckSpawn : MonoBehaviour {
         newCoin.gameObject.SetActive(true);
         newCoin.transform.parent = transform.parent;
         newCoin.speed = 0f;
-        wasLastObjectCoin = true;
+        //wasLastObjectCoin = true;
     }
 
     IEnumerator StopSpawnTemporarily(float duration)

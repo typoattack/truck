@@ -3,20 +3,24 @@
 public class PlayerBodyCollider : MonoBehaviour {
 
     PlayerController parent;
-    bool isIsekaid;
+    private bool isIsekaid;
 
 	// Use this for initialization
 	void Start () {
         parent = transform.GetComponentInParent<PlayerController>();
-        isIsekaid = false;
+        isIsekaid = parent.isIsekaid;
 	}
+
+    void Update()
+    {
+        isIsekaid = parent.isIsekaid;
+    }
 
     void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("Truck") || other.gameObject.CompareTag("Tractor"))
         {
             parent.Die(other.gameObject.GetComponent<Rigidbody>().velocity, other);
-            isIsekaid = true;
         }
         /*
         if (other.gameObject.CompareTag("Score"))

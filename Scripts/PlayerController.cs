@@ -62,6 +62,7 @@ public class PlayerController : MonoBehaviour
     private bool canPause;
     public GameObject powerUpButton;
     public GameObject punchButton;
+    public bool isIsekaid;
 
     void Awake()
     {
@@ -86,6 +87,7 @@ public class PlayerController : MonoBehaviour
         }
         Time.timeScale = 5.0f;
         canPause = true;
+        isIsekaid = false;
 
         groundedDistance = 0.5f;
         speed = 2.5f;
@@ -285,6 +287,7 @@ public class PlayerController : MonoBehaviour
             }
             //Time.timeScale = 1.0f;
             canPause = false;
+            isIsekaid = true;
             audio.PlayOneShot(hitByTruckSound, 1.0f);
             StartCoroutine(DelayTime(0.3f));
             Time.timeScale = 0.2f;

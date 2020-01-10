@@ -23,7 +23,8 @@ public class RoadController : MonoBehaviour
         isPlayerMovingForward = mc.forwardMotion;
         speed = mc.speed;
         distanceToMove = mc.distanceToMove;
-        doubleJump = (PlayerPrefs.GetInt("Ability") == 1);
+        //doubleJump = (PlayerPrefs.GetInt("Ability") == 1);
+        doubleJump = mc.doubleJump;
         startingZPosition = (int) transform.position.z;
         lastRoadPosition = roadSpawn.lastRoad;
     }
@@ -35,7 +36,9 @@ public class RoadController : MonoBehaviour
         isPlayerMovingForward = mc.forwardMotion;
         speed = mc.speed;
         distanceToMove = mc.distanceToMove;
-        doubleJump = (PlayerPrefs.GetInt("Ability") == 1);
+        //doubleJump = (PlayerPrefs.GetInt("Ability") == 1);
+        doubleJump = mc.doubleJump;
+
 
         if (isPlayerMovingForward)
         {

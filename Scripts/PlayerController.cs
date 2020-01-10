@@ -38,6 +38,8 @@ public class PlayerController : MonoBehaviour
     // 6: player can stop all trucks for certain time--Jojos tribute outfit
     // 7: player can destroy all trucks on screen--magical girl outfit
 
+    public bool doubleJump = false;
+
     public int maxNumberOfSkins = 8;
 
     private bool isInvisible = false;
@@ -60,6 +62,8 @@ public class PlayerController : MonoBehaviour
 
     //Other
     private bool canPause;
+    public GameObject doubleJumpActivateButton;
+    public GameObject doubleJumpDeactivateButton;
     public GameObject powerUpButton;
     public GameObject punchButton;
     public bool isIsekaid;
@@ -102,9 +106,12 @@ public class PlayerController : MonoBehaviour
         gender = PlayerPrefs.GetInt("Gender");
         if (ability == 1)
         {
+            /*
             speed = 2.0f;
             jumpForce = 10.0f;
             distanceToMove = 2.0f;
+            */
+            doubleJumpActivateButton.SetActive(true);
         }
 
         else if (ability == 2)
@@ -212,7 +219,8 @@ public class PlayerController : MonoBehaviour
         if (jump)
         {
             rb.velocity = Vector3.zero;
-            rb.AddForce(new Vector3(0f, jumpForce, 0f), ForceMode.Impulse);
+            if (forwardMotion) rb.AddForce(new Vector3(0f, jumpForce, 0f), ForceMode.Impulse);
+            else rb.AddForce(new Vector3(0f, 7.0f, 0f), ForceMode.Impulse);
             audio.PlayOneShot(jumpSound, 1.0f);
             jump = false;
         }
@@ -227,6 +235,29 @@ public class PlayerController : MonoBehaviour
             jump = true;
             forwardMotion = true;
         }
+    }
+
+    public void activateDoubleJump()
+    {
+        doubleJump = true;
+        speed = 2.0f;
+        jumpForce = 10.0f;
+        distanceToMove = 2.0f;
+        jumpForward();
+        StartCoroutine(deactivateDoubleJump(0.2f));
+        //doubleJumpActivateButton.SetActive(false);
+        //doubleJumpDeactivateButton.SetActive(true);
+    }
+
+    IEnumerator deactivateDoubleJump(float duration)
+    {
+        yield return new WaitForSeconds(duration);
+        doubleJump = false;
+        speed = 2.5f;
+        jumpForce = 7.0f;
+        distanceToMove = 1.0f;
+        //doubleJumpActivateButton.SetActive(true);
+        //doubleJumpDeactivateButton.SetActive(false);
     }
 
     public void jumpRight()

@@ -31,6 +31,7 @@ public class truckSpawn : MonoBehaviour {
         else if (decider >= 7)
         {
             SpawnCoin();
+            canSpawn = true;
         }
         else SpawnTruck();
     }

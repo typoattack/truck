@@ -17,6 +17,8 @@ public class truckSpawn : MonoBehaviour {
     private float tractorSpeed;
     PlayerController mc;
     private int coinXPosition = 0;
+    public int truckSpawnThreshold;
+    public int coinSpawnThreshold;
 
     // Use this for initialization
     void Start ()
@@ -26,9 +28,10 @@ public class truckSpawn : MonoBehaviour {
 		truckSpeed = Random.Range(minTruckSpeed, minTruckSpeed*2);
         mc = GameObject.Find("MC").GetComponent<PlayerController>();
         tractorSpeed = mc.tractorSpeed;
-        decider = Random.Range(0, 10);
+        decider = Random.Range(0, 19);
+        coinSpawnThreshold = Mathf.Min(1 + PlayerController.score / 20, 7);
         if (transform.parent.CompareTag("Ground")) isParentGround = true;
-        else if (decider >= 7)
+        else if (decider <= coinSpawnThreshold)
         {
             SpawnCoin();
             canSpawn = true;
@@ -39,6 +42,7 @@ public class truckSpawn : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
+        truckSpawnThreshold = Mathf.Min(-7 + PlayerController.score / 20, -3);
         tractorSpeed = mc.tractorSpeed;
         timer += Time.deltaTime;
         if(isParentGround == false) // road spawns trucks
@@ -46,7 +50,7 @@ public class truckSpawn : MonoBehaviour {
             if (timer > waitTime && canSpawn)
             {
                 decider = Random.Range(-7, 7);
-                if (decider <= -3) //|| wasLastObjectCoin)
+                if (decider <= truckSpawnThreshold) //|| wasLastObjectCoin)
 				{
 					truckSpeed = Random.Range(minTruckSpeed, minTruckSpeed*2);
                     SpawnTruck();

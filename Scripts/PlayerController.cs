@@ -58,8 +58,7 @@ public class PlayerController : MonoBehaviour
     private bool startCountdown;
     private float timeLeft;
     private float maxTime;
-
-    //public GameObject counterText;
+    
 
     //Audio
     private AudioSource audio;
@@ -74,7 +73,6 @@ public class PlayerController : MonoBehaviour
     //Other
     private bool canPause;
     public GameObject doubleJumpActivateButton;
-    public GameObject doubleJumpDeactivateButton;
     public GameObject powerUpButton;
     public GameObject punchButton;
     public bool isIsekaid;
@@ -110,6 +108,8 @@ public class PlayerController : MonoBehaviour
         distanceToMove = 1.0f;
         tractorSpeed = 0.2f;
         HP = 2;
+        counterSliderPanel.SetActive(false);
+        powerUpButton.SetActive(false);
 
         skin = PlayerPrefs.GetInt("Skin");
         ability = PlayerPrefs.GetInt("Ability");
@@ -119,23 +119,30 @@ public class PlayerController : MonoBehaviour
             doubleJumpActivateButton.SetActive(true);
         }
 
-        else if (ability == 2)
+        else if (ability == 2 || ability == 3)
         {
             counterMax = 10;
             maxTime = 25.0f;
             powerUpButton.SetActive(true);
         }
-
+        /*
         else if (ability == 3)
         {
             counterMax = 10;
             maxTime = 25.0f;
             powerUpButton.SetActive(true);
         }
-
+        */
         else if (ability == 4)
         {
             punchButton.SetActive(true);
+        }
+
+        else if (ability == 5)
+        {
+            counterSliderPanel.SetActive(true);
+            counterSlider.value = Mathf.Clamp01(((float)HP + 1f) / 3f);
+            counterSlider.gameObject.transform.Find("Fill Area").Find("Fill").GetComponent<Image>().color = new Color(0f / 255f, 153f / 255f, 0f / 255f);
         }
 
         else if (ability == 6)
@@ -149,11 +156,7 @@ public class PlayerController : MonoBehaviour
             counterMax = 30;
             powerUpButton.SetActive(true);
         }
-
-        else
-        {
-            powerUpButton.SetActive(false);
-        }
+        
 
         for (int i = 0; i < maxNumberOfSkins; i++)
         {
@@ -167,8 +170,6 @@ public class PlayerController : MonoBehaviour
         }
 
         counter = counterMax;
-        //counterText.SetActive(false);
-        counterSliderPanel.SetActive(false);
         startCountdown = false;
         timeLeft = 0f;
     }
@@ -221,43 +222,44 @@ public class PlayerController : MonoBehaviour
 
         if (Input.GetKeyDown("w"))
         {
-            //jump = true;
-            //forwardMotion = true;
             jumpForward();
         }
 
         if (Input.GetKeyDown("a"))
         {
-            //jump = true;
-            //destination = new Vector3(transform.position.x - 1.0f, transform.position.y, transform.position.z);
             jumpLeft();
         }
 
         if (Input.GetKeyDown("d"))
         {
-            //jump = true;
-            //destination = new Vector3(transform.position.x + 1.0f, transform.position.y, transform.position.z);
             jumpRight();
         }
 
         float step = speed * Time.deltaTime;
         transform.position = Vector3.MoveTowards(transform.position, destination, step);
 
-        progress = (float)counter / (float)counterMax;
-        counterSlider.value = progress;
-        if (counter >= counterMax && (ability == 2 || ability == 3 || ability == 6 || ability == 7) && canPlayAudio)
+        if (ability != 5)
         {
-            audio.PlayOneShot(abilityReady, 3.0f);
-            canPlayAudio = false;
-            powerUpButton.SetActive(true);
-            //counterText.SetActive(false);
-            counterSliderPanel.SetActive(false);
+            progress = (float)counter / (float)counterMax;
+            counterSlider.value = progress;
+            if (counter >= counterMax && (ability == 2 || ability == 3 || ability == 6 || ability == 7) && canPlayAudio)
+            {
+                audio.PlayOneShot(abilityReady, 3.0f);
+                canPlayAudio = false;
+                powerUpButton.SetActive(true);
+                counterSliderPanel.SetActive(false);
+            }
+
+            if (startCountdown)
+            {
+                timeLeft -= Time.deltaTime;
+                counterSlider.value = Mathf.Clamp01(timeLeft / maxTime);
+            }
         }
 
-        if (startCountdown)
+        else
         {
-            timeLeft -= Time.deltaTime;
-            counterSlider.value = Mathf.Clamp01(timeLeft / maxTime);
+            counterSlider.value = Mathf.Clamp01(((float)HP + 1f) / 3f);
         }
 
     }
@@ -293,8 +295,6 @@ public class PlayerController : MonoBehaviour
         distanceToMove = 2.0f;
         jumpForward();
         StartCoroutine(deactivateDoubleJump(1.0f));
-        //doubleJumpActivateButton.SetActive(false);
-        //doubleJumpDeactivateButton.SetActive(true);
     }
 
     IEnumerator deactivateDoubleJump(float duration)
@@ -304,8 +304,6 @@ public class PlayerController : MonoBehaviour
         speed = 2.5f;
         jumpForce = 7.0f;
         distanceToMove = 1.0f;
-        //doubleJumpActivateButton.SetActive(true);
-        //doubleJumpDeactivateButton.SetActive(false);
     }
 
     public void jumpRight()
@@ -368,17 +366,19 @@ public class PlayerController : MonoBehaviour
                 audio.PlayOneShot(truckDestroyed, 1.0f);
                 Destroy(other.gameObject);
                 HP--;
+                if (HP == 1) counterSlider.gameObject.transform.Find("Fill Area").Find("Fill").GetComponent<Image>().color = new Color(255f / 255f, 204f / 255f, 0f / 155f);
+                if (HP == 0) counterSlider.gameObject.transform.Find("Fill Area").Find("Fill").GetComponent<Image>().color = new Color(255f / 255f, 0f / 255f, 0f / 155f);
                 return;
             }
-            //Time.timeScale = 1.0f;
+            HP = -1;
+            counterSlider.gameObject.transform.Find("Fill Area").Find("Fill").GetComponent<Image>().color = new Color(0f / 255f, 0f / 255f, 0f / 155f);
             canPause = false;
             isIsekaid = true;
             audio.PlayOneShot(hitByTruckSound, 1.0f);
             StartCoroutine(DelayTime(0.3f));
             Time.timeScale = 0.2f;
-            rb.AddForce(/*other.gameObject.GetComponent<Rigidbody>().velocity*/ truckVelocity * 20.0f, ForceMode.Impulse);
+            rb.AddForce(truckVelocity * 20.0f, ForceMode.Impulse);
             rb.AddForce(new Vector3(0f, 10f, 0f), ForceMode.Impulse);
-            //SceneManager.LoadScene("Score", LoadSceneMode.Single);
         }
     }
 
@@ -422,7 +422,6 @@ public class PlayerController : MonoBehaviour
     {
         yield return new WaitForSeconds(duration);
         Time.timeScale = 1f;
-        //gameObject.SetActive(false);
         SceneManager.LoadScene("Score", LoadSceneMode.Single);
     }
     
@@ -435,13 +434,11 @@ public class PlayerController : MonoBehaviour
             distanceToMove = 1.0f;
             yield return null;
         }
-        //yield return new WaitForSeconds(duration);
         speed = 2.5f;
         jumpForce = 7.0f;
         distanceToMove = 1.0f;
         counter = 0;
         canPlayAudio = true;
-        //counterText.SetActive(true);
         startCountdown = false;
     }
     
@@ -453,12 +450,10 @@ public class PlayerController : MonoBehaviour
             activeSkin.gameObject.GetComponent<MeshRenderer>().enabled = false;
             yield return null;
         }
-        //yield return new WaitForSeconds(duration);
         isInvisible = false;
         activeSkin.gameObject.GetComponent<MeshRenderer>().enabled = true;
         counter = 0;
         canPlayAudio = true;
-        //counterText.SetActive(true);
         counterSliderPanel.SetActive(true);
         startCountdown = false;
     }
@@ -516,7 +511,6 @@ public class PlayerController : MonoBehaviour
             counter = 0;
         }
         canPlayAudio = true;
-        //counterText.SetActive(true);
         counterSliderPanel.SetActive(true);
     }
 }

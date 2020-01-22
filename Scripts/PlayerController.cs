@@ -32,15 +32,16 @@ public class PlayerController : MonoBehaviour
     public int skin; // themed skin
     public int gender; // male or female skin
     public int ability; // Public for debug purposes
-    // 1: jump forward two spaces--cheerleader or Mario outfit
-    // 2: faster movement--track and field outfit
-    // 3: player disappears, cannot be hit by trucks for certain time--ninja outfit
-    // 4: player can destroy trucks--delinquent outfit
-    // 5: player can take two truck hits--zombie outfit
-    // 6: player can stop all trucks for certain time--Jojos tribute outfit
-    // 7: player can destroy all trucks on screen--magical girl outfit
+    // 1: double coins
+    // 2: faster movement
+    // 3: player disappears, cannot be hit by trucks for certain time
+    // 4: player can destroy trucks
+    // 5: player can take two truck hits
+    // 6: player can stop all trucks for certain time
+    // 7: player can destroy all trucks on screen
 
     public bool doubleJump = false;
+    public bool doubleCoins = false;
 
     public int maxNumberOfSkins = 8;
 
@@ -116,7 +117,8 @@ public class PlayerController : MonoBehaviour
         gender = PlayerPrefs.GetInt("Gender");
         if (ability == 1)
         {
-            doubleJumpActivateButton.SetActive(true);
+            //doubleJumpActivateButton.SetActive(true);
+            doubleCoins = true;
         }
 
         else if (ability == 2 || ability == 3)
@@ -268,6 +270,7 @@ public class PlayerController : MonoBehaviour
     {
         if (jump)
         {
+            isGrounded = false;
             rb.velocity = Vector3.zero;
             if (forwardMotion) rb.AddForce(new Vector3(0f, jumpForce, 0f), ForceMode.Impulse);
             else rb.AddForce(new Vector3(0f, 7.0f, 0f), ForceMode.Impulse);
@@ -393,7 +396,8 @@ public class PlayerController : MonoBehaviour
     public void AddCoin(Collider other)
     {
         audio.PlayOneShot(collectCoinSound, 1.0f);
-        coins++;
+        if (doubleCoins) coins += 2;
+        else coins++;
         PlayerPrefs.SetInt("TotalCoins", coins);
         Destroy(other.gameObject);
     }

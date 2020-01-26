@@ -77,6 +77,9 @@ public class PlayerController : MonoBehaviour
     public GameObject powerUpButton;
     public GameObject punchButton;
     public bool isIsekaid;
+    public GameObject smallExplosion;
+    public GameObject bigExplosion;
+    public GameObject ninjaSmoke;
 
     void Awake()
     {
@@ -174,6 +177,7 @@ public class PlayerController : MonoBehaviour
         counter = counterMax;
         startCountdown = false;
         timeLeft = 0f;
+        //explosion = GameObject.FindGameObjectWithTag("explosion");
     }
 
     // Update is called once per frame
@@ -344,6 +348,7 @@ public class PlayerController : MonoBehaviour
             timeLeft = 25.0f;
             StartCoroutine(MakeInvisible(25.0f));
             startCountdown = true;
+            Instantiate(ninjaSmoke, transform.position, transform.rotation);
         }
         else if (ability == 6 && counter >= counterMax)
         {
@@ -416,9 +421,11 @@ public class PlayerController : MonoBehaviour
     {
         if (ability == 4)
         {
-            Destroy(other.gameObject);
+            Instantiate(smallExplosion, other.transform.position, other.transform.rotation);
+            //newExplosion.playbackSpeed = 0.2f;
             audio.PlayOneShot(truckDestroyed, 1.0f);
             tractorSpeed += 0.2f;
+            Destroy(other.gameObject);
         }
     }
 
@@ -479,20 +486,21 @@ public class PlayerController : MonoBehaviour
             {
                 float positionZ = transform.position.z;
                 float diffZ = allTrucks[i].transform.position.z - positionZ;
-                if (diffZ <= 10.0f) Destroy(allTrucks[i]);
+                if (diffZ <= 10.0f) Destroy(allTrucks[i]);                
             }
 
             for (int i = 0; i < allTractors.Length; i++)
             {
                 float positionZ = transform.position.z;
                 float diffZ = allTractors[i].transform.position.z - positionZ;
-                if (diffZ <= 10.0f) Destroy(allTractors[i]);
+                if (diffZ <= 10.0f) Destroy(allTractors[i]);                
             }
 
             for (int i = 0; i < allTruckSpawns.Length; i++)
             {
                 allTruckSpawns[i].SendMessage("StopSpawnTemporarily", 10.0f);
             }
+            Instantiate(bigExplosion, new Vector3(0.0f, 0.0f, 2.0f), transform.rotation);
             audio.PlayOneShot(truckDestroyed, 5.0f);
             counter = 0;
         }

@@ -178,6 +178,8 @@ public class PlayerController : MonoBehaviour
         startCountdown = false;
         timeLeft = 0f;
         //explosion = GameObject.FindGameObjectWithTag("explosion");
+
+        SwipeDetector.OnSwipe += SwipeDetector_OnSwipe;
     }
 
     // Update is called once per frame
@@ -283,6 +285,13 @@ public class PlayerController : MonoBehaviour
         }
 
         if (forwardMotion) forwardMotion = false;
+    }
+
+    private void SwipeDetector_OnSwipe(SwipeData data)
+    {
+        if (data.Direction == SwipeDirection.Up) jumpForward();
+        if (data.Direction == SwipeDirection.Left) jumpLeft();
+        if (data.Direction == SwipeDirection.Right) jumpRight();
     }
    
     public void jumpForward()
@@ -458,11 +467,11 @@ public class PlayerController : MonoBehaviour
         while (timeLeft > 0f)
         {
             isInvisible = true;
-            activeSkin.gameObject.GetComponent<MeshRenderer>().enabled = false;
+            //activeSkin.gameObject.GetComponent<MeshRenderer>().enabled = false;
             yield return null;
         }
         isInvisible = false;
-        activeSkin.gameObject.GetComponent<MeshRenderer>().enabled = true;
+        //activeSkin.gameObject.GetComponent<MeshRenderer>().enabled = true;
         counter = 0;
         canPlayAudio = true;
         counterSliderPanel.SetActive(true);

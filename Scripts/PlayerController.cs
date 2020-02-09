@@ -80,6 +80,7 @@ public class PlayerController : MonoBehaviour
     public GameObject smallExplosion;
     public GameObject bigExplosion;
     public GameObject ninjaSmoke;
+    private bool powerUpActive;
 
     void Awake()
     {
@@ -180,6 +181,7 @@ public class PlayerController : MonoBehaviour
         //explosion = GameObject.FindGameObjectWithTag("explosion");
 
         SwipeDetector.OnSwipe += SwipeDetector_OnSwipe;
+        powerUpActive = false;
     }
 
     // Update is called once per frame
@@ -292,6 +294,7 @@ public class PlayerController : MonoBehaviour
         if (data.Direction == SwipeDirection.Up) jumpForward();
         if (data.Direction == SwipeDirection.Left) jumpLeft();
         if (data.Direction == SwipeDirection.Right) jumpRight();
+        //if (data.Direction == SwipeDirection.Tap && !powerUpActive) ActivatePowerup();
     }
    
     public void jumpForward()
@@ -349,6 +352,7 @@ public class PlayerController : MonoBehaviour
             timeLeft = 25.0f;
             StartCoroutine(Run(timeLeft));
             startCountdown = true;
+            powerUpActive = true;
         }
         if (ability == 3 && counter >= counterMax)
         {
@@ -357,18 +361,21 @@ public class PlayerController : MonoBehaviour
             timeLeft = 25.0f;
             StartCoroutine(MakeInvisible(25.0f));
             startCountdown = true;
+            powerUpActive = true;
             Instantiate(ninjaSmoke, transform.position, transform.rotation);
         }
         else if (ability == 6 && counter >= counterMax)
         {
             progress = 0f;
             audio.PlayOneShot(abilityUsed, 1.0f);
+            powerUpActive = true;
             affectTruckTemporarily();
         }
         else if (ability == 7 && counter >= counterMax)
         {
             progress = 0f;
             audio.PlayOneShot(abilityUsed, 1.0f);
+            powerUpActive = true;
             affectTruckTemporarily();
         }
         powerUpButton.SetActive(false);
@@ -460,6 +467,7 @@ public class PlayerController : MonoBehaviour
         counter = 0;
         canPlayAudio = true;
         startCountdown = false;
+        powerUpActive = false;
     }
     
     IEnumerator MakeInvisible(float duration)
@@ -476,6 +484,7 @@ public class PlayerController : MonoBehaviour
         canPlayAudio = true;
         counterSliderPanel.SetActive(true);
         startCountdown = false;
+        powerUpActive = false;
     }
 
     private void affectTruckTemporarily()
@@ -533,5 +542,6 @@ public class PlayerController : MonoBehaviour
         }
         canPlayAudio = true;
         counterSliderPanel.SetActive(true);
+        powerUpActive = false;
     }
 }

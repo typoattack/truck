@@ -7,18 +7,20 @@ public class SwipeDetector : MonoBehaviour {
     private Vector2 fingerUpPosition;
 
     [SerializeField]
-    private bool detectSwipeOnlyAfterRelease = false;
+    private bool detectSwipeOnlyAfterRelease = true;
 
     [SerializeField]
     private float minDistanceForSwipe = 20f;
 
     public static event Action<SwipeData> OnSwipe = delegate { };
-	
+    private int tapcount = 0;
 	
 	void Update ()
     {
 		foreach (Touch touch in Input.touches)
+        if (Input.touchCount > 0)
         {
+            //Touch touch = Input.GetTouch(0);
             if (touch.phase == TouchPhase.Began)
             {
                 fingerUpPosition = touch.position;
@@ -41,17 +43,28 @@ public class SwipeDetector : MonoBehaviour {
 
     private void DetectSwipe()
     {
+        
+        if (CheckForTap())
+        {
+            //tapcount++;
+            //Debug.Log("Tap" + tapcount);
+            var direction = SwipeDirection.Tap;
+            SendSwipe(direction);
+        }
+        
         if (SwipeDistanceCheckMet())
         {
             if (IsVerticalSwipe())
             {
                 var direction = fingerDownPosition.y - fingerUpPosition.y > 0 ? SwipeDirection.Up : SwipeDirection.Down;
                 SendSwipe(direction);
+                //Debug.Log(fingerDownPosition.y - fingerUpPosition.y);
             }
             else
             {
                 var direction = fingerDownPosition.x - fingerUpPosition.x > 0 ? SwipeDirection.Right : SwipeDirection.Left;
                 SendSwipe(direction);
+                //Debug.Log(fingerDownPosition.x - fingerUpPosition.x);
             }
         }
     }
@@ -74,6 +87,11 @@ public class SwipeDetector : MonoBehaviour {
     private float HorizontalMovementDistance()
     {
         return Mathf.Abs(fingerDownPosition.x - fingerUpPosition.x);
+    }
+
+    private bool CheckForTap()
+    {
+        return fingerUpPosition == fingerDownPosition;
     }
 
     private void SendSwipe(SwipeDirection direction)
@@ -100,5 +118,6 @@ public enum SwipeDirection
     Up,
     Down,
     Left,
-    Right
+    Right,
+    Tap
 }

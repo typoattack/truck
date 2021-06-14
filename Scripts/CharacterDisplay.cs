@@ -5,62 +5,42 @@ using UnityEngine;
 public class CharacterDisplay : MonoBehaviour {
 
     CharacterMainMenu menu;
-    private int skin, gender;
-    private int currentskin, currentGender = 0;
-    private int maxNumberOfSkins = 8;
+    private int skin;
+    private int currentskin = 0;
+    private int maxNumberOfSkins = 2;
 
 	// Use this for initialization
 	void Start ()
     {
         menu = GameObject.Find("CharacterMainMenu").GetComponent<CharacterMainMenu>();
         skin = menu.skin;
-        gender = menu.gender;
         currentskin = skin;
-        currentGender = gender;
-        displayModel(currentskin, currentGender);
+        displayModel(currentskin);
     }
 	
 	// Update is called once per frame
 	void Update ()
     {
         skin = menu.skin;
-        gender = menu.gender;
 
-        if (currentskin != skin || currentGender != gender)
+        if (currentskin != skin)
         {
             currentskin = skin;
-            currentGender = gender;
-            displayModel(currentskin, currentGender);
+            displayModel(currentskin);
         }
     }
 
-    void displayModel(int skin, int gender)
+    void displayModel(int skin)
     {
-        for (int g = 0; g <= 1; g++)
+        for (int s = 0; s < maxNumberOfSkins; s++)
         {
-            if (g == gender)
+            if (s == skin)
             {
-                for (int s = 0; s < maxNumberOfSkins; s++)
-                {
-                    if (s == skin)
-                    {
-                        gameObject.transform.GetChild(0).GetChild(g).GetChild(s).gameObject.SetActive(true);
-                        gameObject.transform.GetChild(1).GetChild(g).GetChild(s).gameObject.SetActive(true);
-                    }
-                    else
-                    {
-                        gameObject.transform.GetChild(0).GetChild(g).GetChild(s).gameObject.SetActive(false);
-                        gameObject.transform.GetChild(1).GetChild(g).GetChild(s).gameObject.SetActive(false);
-                    }
-                }
+                gameObject.transform.GetChild(s).gameObject.SetActive(true);
             }
             else
             {
-                for (int s = 0; s < maxNumberOfSkins; s++)
-                {
-                    gameObject.transform.GetChild(0).GetChild(g).GetChild(s).gameObject.SetActive(false);
-                    gameObject.transform.GetChild(1).GetChild(g).GetChild(s).gameObject.SetActive(false);
-                }
+                gameObject.transform.GetChild(s).gameObject.SetActive(false);
             }
         }
     }

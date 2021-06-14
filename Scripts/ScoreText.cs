@@ -14,7 +14,7 @@ public class ScoreText : MonoBehaviour {
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Space))
-            SceneManager.LoadScene("Main", LoadSceneMode.Single);
+            SceneManager.LoadSceneAsync("Main", LoadSceneMode.Single);
     }
 
     private void SetScoreText()

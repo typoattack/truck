@@ -3,10 +3,10 @@ using UnityEngine.SceneManagement;
 
 public class OptionsMenu : MonoBehaviour {
 
-    private int[] abilitiesLocked = { 1, 0, 0, 0, 0, 0, 0, 0 };
-    private int[] abilitiesUnlocked = { 1, 1, 1, 1, 1, 1, 1, 1 };
-    private int[] skinsLocked = { 2, 0, 0, 0, 0, 0, 0, 0 };
-    private int[] skinsUnlocked = { 2, 1, 1, 1, 1, 1, 1, 1 };
+    private int[] abilitiesLocked = { 2, 0, 0, 0, 0, 0, 0 };
+    private int[] abilitiesUnlocked = { 2, 2, 2, 2, 2, 2, 2 };
+    private int[] skinsLocked = { 1, 0 };
+    private int[] skinsUnlocked = { 1, 1 };
 
     public void GoToCustomization()
     {

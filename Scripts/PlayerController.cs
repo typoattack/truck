@@ -30,7 +30,6 @@ public class PlayerController : MonoBehaviour
 
     //Abilities and powerups
     public int skin; // themed skin
-    public int gender; // male or female skin
     public int ability; // Public for debug purposes
     // 1: double coins
     // 2: faster movement
@@ -43,7 +42,7 @@ public class PlayerController : MonoBehaviour
     public bool doubleJump = false;
     public bool doubleCoins = false;
 
-    public int maxNumberOfSkins = 8;
+    public int maxNumberOfSkins = 2;
 
     public bool isInvisible = false;
 
@@ -118,7 +117,6 @@ public class PlayerController : MonoBehaviour
 
         skin = PlayerPrefs.GetInt("Skin");
         ability = PlayerPrefs.GetInt("Ability");
-        gender = PlayerPrefs.GetInt("Gender");
         if (ability == 1)
         {
             //doubleJumpActivateButton.SetActive(true);
@@ -162,17 +160,19 @@ public class PlayerController : MonoBehaviour
             counterMax = 30;
             powerUpButton.SetActive(true);
         }
-        
+
 
         for (int i = 0; i < maxNumberOfSkins; i++)
         {
+            activeSkin = gameObject.transform.GetChild(2).GetChild(i).gameObject;
             if (i == skin)
             {
-                activeSkin = gameObject.transform.GetChild(2).GetChild(gender).GetChild(i).gameObject;
-                //gameObject.transform.GetChild(2).GetChild(gender).GetChild(i).gameObject.SetActive(true);
                 activeSkin.SetActive(true);
             }
-            else gameObject.transform.GetChild(2).GetChild(gender).GetChild(i).gameObject.SetActive(false);
+            else
+            {
+                activeSkin.SetActive(false);
+            }
         }
 
         counter = counterMax;
@@ -284,6 +284,7 @@ public class PlayerController : MonoBehaviour
             else rb.AddForce(new Vector3(0f, 7.0f, 0f), ForceMode.Impulse);
             audio.PlayOneShot(jumpSound, 1.0f);
             jump = false;
+            Debug.Log("jump");
         }
 
         if (forwardMotion) forwardMotion = false;

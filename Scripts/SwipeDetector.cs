@@ -18,7 +18,7 @@ public class SwipeDetector : MonoBehaviour {
 	void Update ()
     {
 		foreach (Touch touch in Input.touches)
-        if (Input.touchCount > 0)
+        //if (Input.touchCount > 0)
         {
             //Touch touch = Input.GetTouch(0);
             if (touch.phase == TouchPhase.Began)
@@ -46,13 +46,13 @@ public class SwipeDetector : MonoBehaviour {
         
         if (CheckForTap())
         {
-            //tapcount++;
-            //Debug.Log("Tap" + tapcount);
-            var direction = SwipeDirection.Tap;
-            SendSwipe(direction);
+            tapcount++;
+            Debug.Log("Tap " + tapcount);
+            //var direction = SwipeDirection.Tap;
+            //SendSwipe(direction);
         }
         
-        if (SwipeDistanceCheckMet())
+        else if (SwipeDistanceCheckMet())
         {
             if (IsVerticalSwipe())
             {
@@ -91,6 +91,7 @@ public class SwipeDetector : MonoBehaviour {
 
     private bool CheckForTap()
     {
+        //Debug.Log(Vector2.Distance(fingerDownPosition, fingerUpPosition));
         return fingerUpPosition == fingerDownPosition;
     }
 

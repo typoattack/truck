@@ -7,7 +7,7 @@ public class ImageDisplayScript : MonoBehaviour {
     CharacterMainMenu menu;
     private int ability;
     private int currentAbility = 0;
-    private int maxNumberOfAbilities = 8;
+    private int maxNumberOfAbilities = 7;
 
     // Use this for initialization
     void Start ()

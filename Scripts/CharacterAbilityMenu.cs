@@ -5,12 +5,13 @@ using UnityEngine;
 public class CharacterAbilityMenu : MonoBehaviour {
 
     CharacterMainMenu menu;
-    private int[] abilityLocks = new int[8];
-    private int[] abilityUnlockThreshold = { 0, 10, 20, 30, 40, 50, 60, 70 };
+    private int[] abilityLocks = new int[7];
+    private int[] abilityUnlockThreshold = { 0, 10, 20, 30, 40, 50, 70 };
     private int ability;
     private int currentAbility;
-    private int totalScore;
-    private int totalAbilities = 8;
+    private int coins;
+    private int totalAbilities = 7;
+    public int isAbilityValid = 0;
     
     void Start ()
     {
@@ -26,13 +27,13 @@ public class CharacterAbilityMenu : MonoBehaviour {
         }
         ability = menu.ability;
         currentAbility = ability;
-        if (!PlayerPrefs.HasKey("TotalScore"))
+        if (!PlayerPrefs.HasKey("TotalCoins"))
         {
-            PlayerPrefs.SetInt("TotalScore", 0);
+            PlayerPrefs.SetInt("TotalCoins", 0);
         }
         else
         {
-            totalScore = PlayerPrefs.GetInt("TotalScore");
+            coins = PlayerPrefs.GetInt("TotalCoins");
         }
         displayButton(currentAbility);
     }
@@ -50,22 +51,39 @@ public class CharacterAbilityMenu : MonoBehaviour {
 
     void displayButton(int ability)
     {
-        if (abilityLocks[ability] == 1)
+        if (abilityLocks[ability] == 2)
         {
             gameObject.transform.GetChild(4).gameObject.SetActive(false);
-            gameObject.transform.GetChild(3).gameObject.SetActive(true);
+            gameObject.transform.GetChild(5).gameObject.SetActive(false);
+            //gameObject.transform.GetChild(3).gameObject.SetActive(true);
+            isAbilityValid = 1;
         }
-        else if (abilityLocks[ability] == 0 && totalScore >= abilityUnlockThreshold[ability])
+        else if (coins >= abilityUnlockThreshold[ability])
         {
             gameObject.transform.GetChild(4).gameObject.SetActive(false);
             abilityLocks[ability] = 1;
-            PlayerPrefsX.SetIntArray("AbilityLocks", abilityLocks);
-            gameObject.transform.GetChild(3).gameObject.SetActive(true);
+            PlayerPrefsX.SetIntArray("abilityLocks", abilityLocks);
+            //gameObject.transform.GetChild(3).gameObject.SetActive(false);
+            gameObject.transform.GetChild(5).gameObject.SetActive(true);
+            isAbilityValid = 0;
         }
         else
         {
-            gameObject.transform.GetChild(3).gameObject.SetActive(false);
+            abilityLocks[ability] = 0;
+            PlayerPrefsX.SetIntArray("abilityLocks", abilityLocks);
+            //gameObject.transform.GetChild(3).gameObject.SetActive(false);
             gameObject.transform.GetChild(4).gameObject.SetActive(true);
+            gameObject.transform.GetChild(5).gameObject.SetActive(false);
+            isAbilityValid = 0;
         }
+    }
+
+    public void purchase()
+    {
+        coins -= abilityUnlockThreshold[currentAbility];
+        PlayerPrefs.SetInt("TotalCoins", coins);
+        abilityLocks[currentAbility] = 2;
+        PlayerPrefsX.SetIntArray("abilityLocks", abilityLocks);
+        displayButton(currentAbility);
     }
 }

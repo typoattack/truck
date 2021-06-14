@@ -3,11 +3,11 @@ using UnityEngine.SceneManagement;
 
 public class CharacterMainMenu : MonoBehaviour {
 
-    public int ability = 0, gender = 0, skin = 0;
-    private int totalAbilities = 8, totalSkins = 8;
+    public int ability = 0, skin = 0;
+    private int totalAbilities = 7, totalSkins = 2;
 
-    public int[] abilityLocks = { 1, 0, 0, 0, 0, 0, 0, 0 };
-    public int[] skinLocks = { 2, 0, 0, 0, 0, 0, 0, 0 };
+    public int[] abilityLocks = { 2, 0, 0, 0, 0, 0, 0, 0 };
+    public int[] skinLocks = { 1, 0 };
 
     void Start()
     {
@@ -19,16 +19,7 @@ public class CharacterMainMenu : MonoBehaviour {
         {
             ability = PlayerPrefs.GetInt("Ability");
         }
-
-        if (!PlayerPrefs.HasKey("Gender"))
-        {
-            PlayerPrefs.SetInt("Gender", 0);
-        }
-        else
-        {
-            gender = PlayerPrefs.GetInt("Gender");
-        }
-
+        
         if (!PlayerPrefs.HasKey("Skin"))
         {
             PlayerPrefs.SetInt("Skin", 0);
@@ -60,7 +51,6 @@ public class CharacterMainMenu : MonoBehaviour {
     {
         ability = ability % totalAbilities;
         skin = skin % totalSkins;
-        gender = gender % 2;
     }
 
     public void AddToAbilities()
@@ -94,19 +84,13 @@ public class CharacterMainMenu : MonoBehaviour {
 
     public void ConfirmSkin()
     {
-        PlayerPrefs.SetInt("Gender", gender);
         PlayerPrefs.SetInt("Skin", skin);
     }
-
-    public void AddToGender()
-    {
-        gender++;
-    }
+    
 
     public void ExitToMenu()
     {
         //PlayerPrefs.SetInt("Ability", ability);
-        //PlayerPrefs.SetInt("Gender", gender);
         //PlayerPrefs.SetInt("Skin", skin);
         SceneManager.LoadScene("Menu", LoadSceneMode.Single);
     }

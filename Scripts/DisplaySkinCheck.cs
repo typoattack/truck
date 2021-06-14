@@ -14,7 +14,7 @@ public class DisplaySkinCheck : MonoBehaviour {
 
     void Update()
     {
-        if (menu.skin == PlayerPrefs.GetInt("Skin") && menu.gender == PlayerPrefs.GetInt("Gender"))
+        if (menu.skin == PlayerPrefs.GetInt("Skin"))
         {
             gameObject.GetComponent<SpriteRenderer>().enabled = true;
         }

@@ -19,7 +19,7 @@ public class PlayerController : MonoBehaviour
     private float groundedDistance;
 
     //Score
-    [HideInInspector] public static int score = 0, coins = 0, totalScore = 0;
+    [HideInInspector] public static int score = 0, coins = 0, topScore = 0;
 
     //Movement flags and variables
     [HideInInspector] public bool forwardMotion = false;
@@ -94,13 +94,13 @@ public class PlayerController : MonoBehaviour
         {
             coins = PlayerPrefs.GetInt("TotalCoins");
         }
-        if (!PlayerPrefs.HasKey("TotalScore"))
+        if (!PlayerPrefs.HasKey("TopScore"))
         {
-            PlayerPrefs.SetInt("TotalScore", 0);
+            PlayerPrefs.SetInt("TopScore", 0);
         }
         else
         {
-            totalScore = PlayerPrefs.GetInt("TotalScore");
+            topScore = PlayerPrefs.GetInt("TopScore");
         }
         Time.timeScale = 5.0f;
         canPause = true;
@@ -191,8 +191,8 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyDown("r"))
         {
             PlayerPrefs.SetInt("TotalCoins", 0);
-            PlayerPrefs.SetInt("TotalScore", 0);
-            score = coins = totalScore = 0;
+            PlayerPrefs.SetInt("TopScore", 0);
+            score = coins = topScore = 0;
         }
 
 
@@ -410,8 +410,8 @@ public class PlayerController : MonoBehaviour
     public void AddScore()
     {
         score++;
-        totalScore++;
-        PlayerPrefs.SetInt("TotalScore", totalScore);
+        if (score > topScore) topScore = score;
+        PlayerPrefs.SetInt("TopScore", topScore);
         if (counter < counterMax) counter++;
     }
 

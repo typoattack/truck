@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CharacterAbilityMenu : MonoBehaviour {
 
@@ -12,6 +13,8 @@ public class CharacterAbilityMenu : MonoBehaviour {
     private int coins;
     private int totalAbilities = 7;
     public int isAbilityValid = 0;
+
+    public Text abilityUnlockText;
     
     void Start ()
     {
@@ -51,6 +54,8 @@ public class CharacterAbilityMenu : MonoBehaviour {
 
     void displayButton(int ability)
     {
+        abilityUnlockText.text = abilityUnlockThreshold[ability] + " coins needed to unlock";
+
         if (abilityLocks[ability] == 2)
         {
             gameObject.transform.GetChild(4).gameObject.SetActive(false);

@@ -16,7 +16,7 @@ public class OptionsMenu : MonoBehaviour {
     public void ResetAllValues()
     {
         PlayerPrefs.SetInt("TotalCoins", 0);
-        PlayerPrefs.SetInt("TotalScore", 0);
+        PlayerPrefs.SetInt("TopScore", 0);
         PlayerPrefsX.SetIntArray("AbilityLocks", abilitiesLocked);
         PlayerPrefsX.SetIntArray("SkinLocks", skinsLocked);
         PlayerPrefs.SetInt("Ability", 0);
@@ -27,7 +27,7 @@ public class OptionsMenu : MonoBehaviour {
     public void MaxAllValues()
     {
         PlayerPrefs.SetInt("TotalCoins", 99999);
-        PlayerPrefs.SetInt("TotalScore", 99999);
+        PlayerPrefs.SetInt("TopScore", 99999);
         PlayerPrefsX.SetIntArray("AbilityLocks", abilitiesUnlocked);
         PlayerPrefsX.SetIntArray("SkinLocks", skinsUnlocked);
     }

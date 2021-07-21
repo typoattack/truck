@@ -5,9 +5,28 @@ using UnityEngine.SceneManagement;
 public class ScoreText : MonoBehaviour {
 
     public Text scoreText;
+    private int coins;
+    private int topScore;
 
     private void Start()
     {
+        if (!PlayerPrefs.HasKey("TotalCoins"))
+        {
+            PlayerPrefs.SetInt("TotalCoins", 0);
+        }
+        else
+        {
+            coins = PlayerPrefs.GetInt("TotalCoins");
+        }
+        if (!PlayerPrefs.HasKey("TopScore"))
+        {
+            PlayerPrefs.SetInt("TopScore", 0);
+        }
+        else
+        {
+            topScore = PlayerPrefs.GetInt("TopScore");
+        }
+
         SetScoreText();
     }
 
@@ -20,7 +39,7 @@ public class ScoreText : MonoBehaviour {
     private void SetScoreText()
     {
         scoreText.text = "Round Score: " + PlayerController.score + "\r\n" +
-                         "Cumulative Score: " + PlayerController.totalScore + "\r\n" + 
-                         "Total Coins: " + PlayerController.coins + "\r\n";
+                         "High Score: " + topScore + "\r\n" + 
+                         "Coins: " + coins + "\r\n";
     }
 }

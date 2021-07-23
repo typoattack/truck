@@ -2082,6 +2082,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ecaddc1647235f4a8e2aa8df85d8884, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  abilityLocks: 00000000000000000000000000000000000000000000000000000000
   isAbilityValid: 0
   abilityUnlockText: {fileID: 1229954744}
 --- !u!1 &563183023
@@ -3883,7 +3884,7 @@ GameObject:
   - component: {fileID: 839243216}
   - component: {fileID: 839243215}
   m_Layer: 5
-  m_Name: Audio Source
+  m_Name: BGM
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

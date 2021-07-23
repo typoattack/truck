@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class CharacterAbilityMenu : MonoBehaviour {
 
     CharacterMainMenu menu;
-    private int[] abilityLocks = new int[7];
+    public int[] abilityLocks = new int[7];
     private int[] abilityUnlockThreshold = { 0, 10, 20, 30, 40, 50, 70 };
     private int ability;
     private int currentAbility;
@@ -88,7 +88,7 @@ public class CharacterAbilityMenu : MonoBehaviour {
         coins -= abilityUnlockThreshold[currentAbility];
         PlayerPrefs.SetInt("TotalCoins", coins);
         abilityLocks[currentAbility] = 2;
-        PlayerPrefsX.SetIntArray("abilityLocks", abilityLocks);
+        PlayerPrefsX.SetIntArray("AbilityLocks", abilityLocks);
         displayButton(currentAbility);
     }
 }
